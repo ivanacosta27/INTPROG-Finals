@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/post_title"
-            android:textSize="17sp"
+            android:textSize="25sp"
             android:id="@+id/postTitle"
             android:textStyle="bold"/>
 
@@ -54,8 +54,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/upVotePost"
-                android:layout_width="20sp"
-                android:layout_height="20sp"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
                 android:layout_marginStart="20dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -63,8 +63,8 @@
                 android:contentDescription="@string/upvote"/>
             <TextView
                 android:layout_marginStart="5dp"
-                android:layout_width="20sp"
-                android:layout_height="20sp"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
                 android:id="@+id/upVotes"
                 android:text=""/>
 
@@ -77,8 +77,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/downVotePost"
-                android:layout_width="20sp"
-                android:layout_height="20sp"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
                 android:layout_marginStart="10dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -86,8 +86,8 @@
                 android:contentDescription="@string/downvote"/>
             <TextView
                 android:layout_marginStart="5dp"
-                android:layout_width="20sp"
-                android:layout_height="20sp"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
                 android:text=""
                 android:id="@+id/downVotes"/>
 
@@ -100,11 +100,10 @@
             android:layout_marginStart="10dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="20sp"
-                android:layout_height="20sp"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="onCreateComment"
                 android:src="@drawable/comment_icon" />
             <TextView
                 android:layout_marginStart="5dp"

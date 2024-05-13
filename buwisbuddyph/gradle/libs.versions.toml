@@ -17,8 +17,10 @@ constraintlayout = "2.1.4"
 firebaseAuthKtx = "23.0.0"
 firebaseFirestoreKtx = "25.0.0"
 firebaseStorageKtx = "21.0.0"
+coilCompose = "1.4.0"
 
 [libraries]
+coilCompose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
 picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 circleImageView = { group = "de.hdodenhof", name = "circleimageview", version.ref = "circleImageView" }
