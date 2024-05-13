@@ -1,10 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/appName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/home_color"
+        android:layout_alignParentTop="true">
+        <TextView
+            android:id="@+id/appNameTV"
+            android:text="@string/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:layout_weight="3"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/userProfileImage"
+            android:src="@drawable/default_profile_img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/navigationBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="10dp"
+        android:background="@color/home_color"
+        android:layout_below="@+id/appName">
+
+        <ImageView
+            android:id="@+id/calendarIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/calendar_icon"
+            android:src="@drawable/calendar_icon"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"/>
+        <ImageView
+            android:id="@+id/cameraIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/camera_icon"
+            android:src="@drawable/camera_icon"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"/>
+        <ImageView
+            android:id="@+id/homeIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/home_icon"
+            android:src="@drawable/home_icon"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"/>
+        <ImageView
+            android:id="@+id/messagesIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/messages_icon"
+            android:src="@drawable/messages_icon"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"/>
+        <ImageView
+            android:id="@+id/forumIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/forum_icon"
+            android:src="@drawable/forum_icon"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_below="@id/navigationBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+
+</RelativeLayout>

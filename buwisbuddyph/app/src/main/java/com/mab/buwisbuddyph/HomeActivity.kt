@@ -1,20 +1,44 @@
 package com.mab.buwisbuddyph
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.util.Log
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.snackbar.Snackbar
+
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_home)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        toHome()
+
+        val forumIcon = findViewById<ImageView>(R.id.forumIcon)
+        forumIcon.setOnClickListener{
+            Log.d("forum", "forum icon clicked")
+            toForum()
+        }
+
+        val homeIcon = findViewById<ImageView>(R.id.homeIcon)
+        homeIcon.setOnClickListener{
+            toHome()
+        }
+    }
+
+    private fun toForum(){
+        val forumFragment = ForumFragment()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayout, forumFragment)
+            commit()
+        }
+    }
+
+    private fun toHome(){
+        val homeFragment = HomeFragment()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayout, homeFragment)
+            commit()
         }
     }
 }

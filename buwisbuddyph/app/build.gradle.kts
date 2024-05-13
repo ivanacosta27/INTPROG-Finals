@@ -53,6 +53,7 @@ android {
 
 dependencies {
 
+    implementation (libs.picasso)
     implementation (libs.circleImageView)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
