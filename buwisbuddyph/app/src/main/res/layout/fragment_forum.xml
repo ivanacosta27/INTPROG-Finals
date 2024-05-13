@@ -23,6 +23,7 @@
         </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/createPost"
         android:layout_width="60sp"
         android:layout_height="60sp"
         android:focusable="true"
@@ -31,8 +32,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="30dp"
-        android:clickable="true"
-        android:onClick="onCreatePost"/>
+        android:clickable="true" />
 
 
 </RelativeLayout>

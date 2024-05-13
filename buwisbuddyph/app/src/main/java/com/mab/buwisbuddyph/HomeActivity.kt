@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
+
 
 
 class HomeActivity : AppCompatActivity() {
@@ -24,6 +24,11 @@ class HomeActivity : AppCompatActivity() {
         homeIcon.setOnClickListener{
             toHome()
         }
+
+        val messageIcon = findViewById<ImageView>(R.id.messagesIcon)
+        messageIcon.setOnClickListener{
+            toMessages()
+        }
     }
 
     private fun toForum(){
@@ -38,6 +43,14 @@ class HomeActivity : AppCompatActivity() {
         val homeFragment = HomeFragment()
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.frameLayout, homeFragment)
+            commit()
+        }
+    }
+
+    private fun toMessages(){
+        val messagesFragment = MessagesFragment()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayout, messagesFragment)
             commit()
         }
     }

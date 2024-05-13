@@ -22,4 +22,10 @@
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis cursus sit amet mauris eu suscipit. In posuere laoreet massa vitae vestibulum. Nulla lorem mi, blandit vitae quam non, fermentum suscipit nunc. Vestibulum bibendum dapibus interdum. Praesent et tempor tortor,</string>
     <string name="upvote">upvote</string>
     <string name="downvote">downvote</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="post_content">Content</string>
+    <string name="post">post</string>
+    <string name="default_user">Juan Doe</string>
+    <string name="messages">Messages</string>
 </resources>

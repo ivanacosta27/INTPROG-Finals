@@ -1,11 +1,11 @@
 package com.mab.buwisbuddyph
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +35,12 @@ class ForumFragment : Fragment() {
 
         loadPosts()
         Log.d("forumFragment", "posts loaded")
+
+        val createPost: ImageView = view.findViewById(R.id.createPost)
+        createPost.setOnClickListener {
+            onCreatePost(it)
+        }
+
         return view
     }
 
@@ -52,6 +58,7 @@ class ForumFragment : Fragment() {
                     }
                 }
                 postAdapter.setPosts(posts)
+                Log.d(TAG, "Posts successfully loaded and set to adapter")
             }
             .addOnFailureListener { exception ->
                 Log.e(TAG, "Error getting posts", exception)
@@ -61,4 +68,15 @@ class ForumFragment : Fragment() {
     companion object {
         private const val TAG = "ForumFragment"
     }
+
+    private fun onCreatePost(view: View) {
+        Log.d(TAG, "onCreatePost called")
+        val postFragment = PostFragment()
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayout, postFragment)
+            commit()
+        }
+        Log.d(TAG, "PostFragment has been committed")
+    }
+
 }
