@@ -28,6 +28,7 @@
         </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/createMessage"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginBottom="30dp"
@@ -36,7 +37,6 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_alignParentEnd="true"
-        android:onClick="onCreateMessage"
         android:src="@drawable/add_icon"/>
 
 </RelativeLayout>

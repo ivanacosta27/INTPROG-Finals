@@ -10,7 +10,6 @@
     <string name="birth_date">BIRTH DATE</string>
     <string name="last_name">LAST NAME</string>
     <string name="first_name">FIRST NAME</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="burger_menu">burger menu</string>
     <string name="calendar_icon">calendar icon</string>
@@ -20,6 +19,7 @@
     <string name="forum_icon">forum icon</string>
     <string name="post_title">post title</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis cursus sit amet mauris eu suscipit. In posuere laoreet massa vitae vestibulum. Nulla lorem mi, blandit vitae quam non, fermentum suscipit nunc. Vestibulum bibendum dapibus interdum. Praesent et tempor tortor,</string>
+   <string name="lorem_short">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis cursus sit amet mauris eu</string>
     <string name="upvote">upvote</string>
     <string name="downvote">downvote</string>
     <string name="title">Title</string>
@@ -28,4 +28,6 @@
     <string name="post">post</string>
     <string name="default_user">Juan Doe</string>
     <string name="messages">Messages</string>
+    <string name="to">To:</string>
+    <string name="send_button">send button</string>
 </resources>
