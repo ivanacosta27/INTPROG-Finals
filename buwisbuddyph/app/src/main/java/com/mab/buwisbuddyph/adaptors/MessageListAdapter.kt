@@ -1,10 +1,12 @@
-package com.mab.buwisbuddyph
+package com.mab.buwisbuddyph.adaptors
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.mab.buwisbuddyph.R
+import com.mab.buwisbuddyph.dataclass.Message
 import de.hdodenhof.circleimageview.CircleImageView
 
 class MessageListAdapter(private val messages: List<Message>) : RecyclerView.Adapter<MessageListAdapter.MessageViewHolder>() {

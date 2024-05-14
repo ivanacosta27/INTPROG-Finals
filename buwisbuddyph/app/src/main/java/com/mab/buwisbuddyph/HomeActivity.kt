@@ -17,6 +17,8 @@ import java.io.OutputStream
 import android.provider.MediaStore
 import android.content.ContentValues
 import android.os.Build
+import com.mab.buwisbuddyph.forum.ForumFragment
+import com.mab.buwisbuddyph.messages.MessagesFragment
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

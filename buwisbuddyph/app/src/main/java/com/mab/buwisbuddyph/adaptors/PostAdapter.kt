@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph
+package com.mab.buwisbuddyph.adaptors
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mab.buwisbuddyph.R
+import com.mab.buwisbuddyph.dataclass.Post
 
 class PostAdapter(private val posts: MutableList<Post>) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 

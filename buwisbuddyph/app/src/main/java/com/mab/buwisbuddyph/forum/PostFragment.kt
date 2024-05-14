@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph
+package com.mab.buwisbuddyph.forum
 
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mab.buwisbuddyph.R
+import com.mab.buwisbuddyph.dataclass.Post
 import java.util.Date
 
 class PostFragment : Fragment() {

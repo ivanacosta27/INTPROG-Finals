@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph
+package com.mab.buwisbuddyph.forum
 
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mab.buwisbuddyph.R
+import com.mab.buwisbuddyph.adaptors.PostAdapter
+import com.mab.buwisbuddyph.dataclass.Post
 
 class ForumFragment : Fragment() {
 

@@ -30,4 +30,6 @@
     <string name="messages">Messages</string>
     <string name="to">To:</string>
     <string name="send_button">send button</string>
+    <string name="name">NAME</string>
+    <string name="user_name">USERNAME</string>
 </resources>

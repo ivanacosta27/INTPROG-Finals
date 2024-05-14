@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph
+package com.mab.buwisbuddyph.dataclass
 
 data class Message(
     val senderId: String,

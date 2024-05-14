@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@color/home_color"
     tools:context=".SignUpActivity">
 
     <LinearLayout
@@ -40,10 +41,10 @@
             android:layout_marginTop="10sp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/userFNameET"
+                android:id="@+id/userFullNameET"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/first_name"
+                android:hint="@string/name"
                 android:background="@drawable/square_border_default"
                 android:paddingStart="15sp"
                 android:paddingEnd="15sp"
@@ -59,10 +60,10 @@
             android:layout_marginTop="10sp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/userLNameET"
+                android:id="@+id/userNameET"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/last_name"
+                android:hint="@string/user_name"
                 android:background="@drawable/square_border_default"
                 android:paddingStart="15sp"
                 android:paddingEnd="15sp"
