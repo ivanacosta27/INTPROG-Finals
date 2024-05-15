@@ -1,84 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".messages.MessagesFragment">
+    android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:orientation="vertical">
+    <!-- Menu Buttons with Badges -->
+    <Button
+        android:id="@+id/btnNewMessage"
+        android:layout_width="match_parent"
+        android:text="New Message"
+        android:layout_height="100dp"
+        android:tint="@color/black" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:orientation="horizontal">
+    <Button
+        android:id="@+id/btnInbox"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="Inbox"
+        android:tint="@color/black" />
+    />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:text="@string/messages"
-                    android:textSize="30sp"
-                    android:layout_marginBottom="10dp"/>
+    <Button
+        android:id="@+id/btnArchive"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="Archive"
+        android:tint="@color/black" />
 
-                <ImageButton
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
-                    android:layout_alignParentEnd="true"
-                    android:contentDescription="@string/search_button"
-                    android:src="@drawable/search_icon"
-                    android:layout_centerVertical="true"
-                    android:scaleType="fitCenter"/>
+    <Button
+        android:id="@+id/btnTrash"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="Trash"
+        android:tint="@color/black" />
 
-            </RelativeLayout>
-
-            <EditText
-                android:id="@+id/searchConversationET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="10dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
-                android:background="@drawable/square_border_default"
-                android:hint="@string/search"
-                android:clickable="true"
-                android:focusable="true"
-                android:inputType="text"
-                android:textSize="25sp"
-                tools:ignore="Autofill" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/messagesRV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="1dp"
-                tools:listitem="@layout/message_list_item"/>
-        </LinearLayout>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/createMessage"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_alignParentBottom="true"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/add_icon"/>
-
-</RelativeLayout>
+</LinearLayout>

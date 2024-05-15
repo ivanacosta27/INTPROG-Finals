@@ -13,19 +13,16 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".forum.PostActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".messages.ConversationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".messages.CreateMessageActivity"
-            android:exported="false" />
-        <activity
             android:name=".ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".messages.InboxActivity"
+            android:exported="false" />
+        <activity
+            android:name=".messages.ArchiveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".messages.TrashActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
@@ -33,7 +30,10 @@
         <activity
             android:name=".SignUpActivity"
             android:exported="false" />
-        <activity
+        <activity android:name=".activities.ChatActivity" />
+        <activity android:name=".activities.CreateMessageActivity" />
+
+    <activity
             android:name=".SignInActivity"
             android:exported="true"
             android:theme="@style/Theme.Design.Light.NoActionBar"
