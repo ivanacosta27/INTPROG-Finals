@@ -16,13 +16,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.Calendar
+import java.util.Locale
 import java.util.UUID
 
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var userProfileImg: CircleImageView
-    private lateinit var userFNameET: EditText
-    private lateinit var userLNameET: EditText
+    private lateinit var userFullNameET: EditText
     private lateinit var birthDateET: EditText
     private lateinit var userEmailET: EditText
     private lateinit var userPasswordET: EditText
@@ -43,8 +43,7 @@ class SignUpActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 
         userProfileImg = findViewById(R.id.userProfileImg)
-        userFNameET = findViewById(R.id.userFNameET)
-        userLNameET = findViewById(R.id.userLNameET)
+        userFullNameET = findViewById(R.id.userFullNameET)
         birthDateET = findViewById(R.id.birthDateET)
         userEmailET = findViewById(R.id.userEmailET)
         userPasswordET = findViewById(R.id.userPasswordET)
@@ -83,21 +82,19 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun createUser() {
-        val userFName = userFNameET.text.toString().trim()
-        val userLName = userLNameET.text.toString().trim()
+        val userFullName = userFullNameET.text.toString().trim()
         val birthDate = birthDateET.text.toString().trim()
         val userEmail = userEmailET.text.toString().trim()
         val userPassword = userPasswordET.text.toString().trim()
         val userPasswordConfirmation = userPasswordConfirmationET.text.toString().trim()
 
-        setEditTextBackground(userFNameET, userFName.isEmpty())
-        setEditTextBackground(userLNameET, userLName.isEmpty())
+        setEditTextBackground(userFullNameET, userFullName.isEmpty())
         setEditTextBackground(birthDateET, birthDate.isEmpty())
         setEditTextBackground(userEmailET, userEmail.isEmpty())
         setEditTextBackground(userPasswordET, userPassword.isEmpty())
         setEditTextBackground(userPasswordConfirmationET, userPasswordConfirmation.isEmpty())
 
-        if (userFName.isEmpty() || userLName.isEmpty() || birthDate.isEmpty() || userEmail.isEmpty() || userPassword.isEmpty() || userPasswordConfirmation.isEmpty()) {
+        if (userFullName.isEmpty() || birthDate.isEmpty() || userEmail.isEmpty() || userPassword.isEmpty() || userPasswordConfirmation.isEmpty()) {
             return
         }
 
@@ -116,12 +113,12 @@ class SignUpActivity : AppCompatActivity() {
                         val userProfileImage = imageUri ?: defaultImageName
 
                         val userInformation = hashMapOf(
-                            "userFName" to userFName,
-                            "userLName" to userLName,
-                            "birthDate" to birthDate,
-                            "userEmail" to userEmail,
+                            "userID" to user.uid,
+                            "userFullName" to userFullName.lowercase(Locale.ROOT),
+                            "birthdate" to birthDate,
+                            "userEmail" to userEmail.lowercase(Locale.ROOT),
                             "userProfileImage" to userProfileImage,
-                            "createdAt" to Timestamp.now() as Any
+                            "createDate" to Timestamp.now() as Any
                         )
 
                         if (imageUri != null) {
@@ -140,6 +137,8 @@ class SignUpActivity : AppCompatActivity() {
                         } else {
                             saveUserToFirestore(userInformation)
                         }
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
                     }
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)

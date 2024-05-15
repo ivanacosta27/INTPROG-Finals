@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
-import com.mab.buwisbuddyph.adaptors.PostAdapter
+import com.mab.buwisbuddyph.adaptors.PostListAdapter
 import com.mab.buwisbuddyph.dataclass.Post
 
 class ForumFragment : Fragment() {
@@ -20,7 +20,7 @@ class ForumFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var recyclerView: RecyclerView
-    private lateinit var postAdapter: PostAdapter
+    private lateinit var postListAdapter: PostListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,8 +33,8 @@ class ForumFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.forumPostList)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        postAdapter = PostAdapter(mutableListOf())
-        recyclerView.adapter = postAdapter
+        postListAdapter = PostListAdapter(mutableListOf())
+        recyclerView.adapter = postListAdapter
 
         loadPosts()
         Log.d("forumFragment", "posts loaded")
@@ -60,7 +60,7 @@ class ForumFragment : Fragment() {
                         posts.add(it)
                     }
                 }
-                postAdapter.setPosts(posts)
+                postListAdapter.setPosts(posts)
                 Log.d(TAG, "Posts successfully loaded and set to adapter")
             }
             .addOnFailureListener { exception ->

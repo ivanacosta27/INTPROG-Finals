@@ -13,7 +13,7 @@ class MessageListAdapter(private val messages: List<Message>) : RecyclerView.Ada
 
     class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val profileImage: CircleImageView = itemView.findViewById(R.id.userImage)
-        val userName: TextView = itemView.findViewById(R.id.userNameTV)
+        val userFullName: TextView = itemView.findViewById(R.id.userFullNameTV)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {

@@ -8,6 +8,8 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -18,6 +20,9 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
+
+        val appCheck = FirebaseAppCheck.getInstance()
+        appCheck.installAppCheckProviderFactory(DebugAppCheckProviderFactory.getInstance())
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
@@ -55,7 +60,6 @@ class SignInActivity : AppCompatActivity() {
                         .get()
                         .addOnSuccessListener { documents ->
                             if (!documents.isEmpty) {
-                                val documentId = documents.documents[0].id
                                 val intent = Intent(this, HomeActivity::class.java)
                                 startActivity(intent)
                             } else {
@@ -66,7 +70,7 @@ class SignInActivity : AppCompatActivity() {
                             Snackbar.make(view, "Error retrieving user document: ${exception.message}", Snackbar.LENGTH_SHORT).show()
                         }
                 } else {
-                    Snackbar.make(view, "Authentication failed.", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(view, "Authentication failed: ${task.exception?.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
     }

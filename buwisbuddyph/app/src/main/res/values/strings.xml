@@ -19,7 +19,7 @@
     <string name="forum_icon">forum icon</string>
     <string name="post_title">post title</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis cursus sit amet mauris eu suscipit. In posuere laoreet massa vitae vestibulum. Nulla lorem mi, blandit vitae quam non, fermentum suscipit nunc. Vestibulum bibendum dapibus interdum. Praesent et tempor tortor,</string>
-   <string name="lorem_short">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis cursus sit amet mauris eu</string>
+    <string name="lorem_short">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis cursus sit amet mauris eu</string>
     <string name="upvote">upvote</string>
     <string name="downvote">downvote</string>
     <string name="title">Title</string>
@@ -32,4 +32,7 @@
     <string name="send_button">send button</string>
     <string name="name">NAME</string>
     <string name="user_name">USERNAME</string>
+    <string name="search">Search</string>
+    <string name="search_button">search button</string>
+    <string name="back_button">back button</string>
 </resources>

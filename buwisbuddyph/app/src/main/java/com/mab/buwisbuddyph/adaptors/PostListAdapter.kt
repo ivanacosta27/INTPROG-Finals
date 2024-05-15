@@ -11,7 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.dataclass.Post
 
-class PostAdapter(private val posts: MutableList<Post>) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+class PostListAdapter(private val posts: MutableList<Post>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
