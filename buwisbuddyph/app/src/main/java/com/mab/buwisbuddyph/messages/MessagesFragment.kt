@@ -36,12 +36,6 @@ class MessagesFragment : Fragment() {
         messageListAdapter = MessageListAdapter(mutableListOf())
 
 
-        val createMessage : ImageView = view.findViewById(R.id.createMessage)
-        createMessage.setOnClickListener{
-            val intent = Intent(requireContext(), CreateMessageActivity::class.java)
-            startActivity(intent)
-        }
-
         return view
     }
 

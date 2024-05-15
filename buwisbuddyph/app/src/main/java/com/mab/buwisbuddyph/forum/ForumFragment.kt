@@ -22,6 +22,7 @@ class ForumFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var postListAdapter: PostListAdapter
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,7 +38,6 @@ class ForumFragment : Fragment() {
         recyclerView.adapter = postListAdapter
 
         loadPosts()
-        Log.d("forumFragment", "posts loaded")
 
         val createPost: ImageView = view.findViewById(R.id.createPost)
         createPost.setOnClickListener {
@@ -50,7 +50,7 @@ class ForumFragment : Fragment() {
 
     private fun loadPosts() {
         db.collection("posts")
-            .orderBy("timestamp") // Order posts by timestamp in ascending order
+            .orderBy("postTimestamp")
             .get()
             .addOnSuccessListener { querySnapshot ->
                 val posts = mutableListOf<Post>()
