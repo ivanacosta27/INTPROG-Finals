@@ -1,5 +1,6 @@
 package com.mab.buwisbuddyph.messages
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
-import com.mab.buwisbuddyph.adaptors.MessageListAdapter
+import com.mab.buwisbuddyph.adapters.MessageListAdapter
 
 class MessagesFragment : Fragment() {
 
@@ -35,21 +36,7 @@ class MessagesFragment : Fragment() {
         messageListAdapter = MessageListAdapter(mutableListOf())
 
 
-        val createMessage : ImageView = view.findViewById(R.id.createMessage)
-        createMessage.setOnClickListener{
-            onCreateMessage(it)
-        }
-
         return view
     }
 
-    private fun onCreateMessage(view: View) {
-        Log.d("MessageFragment", "onCreateMessage called")
-        val createMessageFragment = CreateMessageFragment()
-        requireActivity().supportFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayout, createMessageFragment)
-            commit()
-        }
-        Log.d("MessageFragment", "MessageFragment has been committed")
-    }
 }

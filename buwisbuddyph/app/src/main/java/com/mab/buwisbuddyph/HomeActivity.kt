@@ -58,7 +58,6 @@ class HomeActivity : AppCompatActivity() {
                     scanningResult.pages?.let { pages ->
                         for (page in pages) {
                             val imageUri = page.imageUri
-                            // Save the image to the gallery
                             val inputStream: InputStream? = contentResolver.openInputStream(imageUri)
                             val contentValues = ContentValues().apply {
                                 put(MediaStore.MediaColumns.DISPLAY_NAME, "scanned_image.jpg")
@@ -80,7 +79,6 @@ class HomeActivity : AppCompatActivity() {
                 if (scanningResult != null) {
                     scanningResult.pdf?.let { pdf ->
                         val pdfUri = pdf.uri
-                        val pageCount = pdf.pageCount
                         val inputStream: InputStream? = contentResolver.openInputStream(pdfUri)
                         val contentValues = ContentValues().apply {
                             put(MediaStore.MediaColumns.DISPLAY_NAME, "scanned_document.pdf")

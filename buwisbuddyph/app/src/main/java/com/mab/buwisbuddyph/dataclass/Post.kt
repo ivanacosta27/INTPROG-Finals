@@ -1,22 +1,21 @@
 package com.mab.buwisbuddyph.dataclass
 
-import java.util.Date
+import com.google.firebase.Timestamp
 
 data class Post(
-    val userId: String = "",
-    val content: String = "",
+    val postTitle: String = "",
+    val postDescription: String = "",
+    val postPosterID: String = "",
+    val postContent: String = "",
     val postID: String = "",
-    val timestamp: Date = Date(),
-    var upvotes: Int = 0,
-    var downvotes: Int = 0,
-    val upvotedBy: MutableList<String> = mutableListOf(),
-    val downvotedBy: MutableList<String> = mutableListOf(),
-    var comments: Int = 0
-)
-
-
-
-
-
-
+    val postTimestamp: Timestamp? = null,
+    var postUpVotes: Int = 0,
+    var postDownVotes: Int = 0,
+    val postUpVotedBy: MutableList<String> = mutableListOf(),
+    val postDownVotedBy: MutableList<String> = mutableListOf(),
+    var postCommentsCount: Int = 0,
+    val postCommentList: MutableList<Comment> = mutableListOf(),
+) {
+    constructor() : this("", "", "", "", "", null, 0, 0, mutableListOf(), mutableListOf(), 0, mutableListOf())
+}
 

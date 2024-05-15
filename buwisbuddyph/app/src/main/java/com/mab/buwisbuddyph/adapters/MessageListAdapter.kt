@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph.adaptors
+package com.mab.buwisbuddyph.adapters
 
 import android.view.LayoutInflater
 import android.view.View
