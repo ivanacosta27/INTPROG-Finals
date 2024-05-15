@@ -16,9 +16,14 @@ import java.io.InputStream
 import java.io.OutputStream
 import android.provider.MediaStore
 import android.content.ContentValues
+import android.content.Context
+import android.content.Intent
 import android.os.Build
+import androidx.core.content.ContentProviderCompat.requireContext
+import com.google.firebase.auth.FirebaseAuth
 import com.mab.buwisbuddyph.forum.ForumFragment
 import com.mab.buwisbuddyph.messages.MessagesFragment
+import com.mab.buwisbuddyph.messages.TrashActivity
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +41,26 @@ class HomeActivity : AppCompatActivity() {
         val homeIcon = findViewById<ImageView>(R.id.homeIcon)
         homeIcon.setOnClickListener{
             toHome()
+        }
+
+        val userProfileImage = findViewById<ImageView>(R.id.userProfileImage)
+        userProfileImage.setOnClickListener {
+            // Clear Firebase Auth
+            FirebaseAuth.getInstance().signOut()
+
+            // Clear SharedPreferences
+            val sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.clear()
+            editor.apply()
+
+            // Redirect to SignInPage
+            val intent = Intent(this, SignInActivity::class.java)
+            // Add flags to clear the back stack and start a new task
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            // Finish the current activity to prevent the user from going back to it
+            finish()
         }
 
         val messageIcon = findViewById<ImageView>(R.id.messagesIcon)
@@ -58,6 +83,7 @@ class HomeActivity : AppCompatActivity() {
                     scanningResult.pages?.let { pages ->
                         for (page in pages) {
                             val imageUri = page.imageUri
+                            // Save the image to the gallery
                             val inputStream: InputStream? = contentResolver.openInputStream(imageUri)
                             val contentValues = ContentValues().apply {
                                 put(MediaStore.MediaColumns.DISPLAY_NAME, "scanned_image.jpg")
@@ -79,6 +105,7 @@ class HomeActivity : AppCompatActivity() {
                 if (scanningResult != null) {
                     scanningResult.pdf?.let { pdf ->
                         val pdfUri = pdf.uri
+                        val pageCount = pdf.pageCount
                         val inputStream: InputStream? = contentResolver.openInputStream(pdfUri)
                         val contentValues = ContentValues().apply {
                             put(MediaStore.MediaColumns.DISPLAY_NAME, "scanned_document.pdf")
