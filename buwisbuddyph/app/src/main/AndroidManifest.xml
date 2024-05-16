@@ -13,16 +13,6 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
-<<<<<<< HEAD
-            android:name=".forum.PostActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="false" />
-
-        <activity
-=======
->>>>>>> 06eba06f8f144f744a001cb4713e07cdaf4a620a
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
