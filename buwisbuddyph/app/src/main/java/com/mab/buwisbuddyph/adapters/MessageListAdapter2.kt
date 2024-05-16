@@ -15,10 +15,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.activities.ChatActivity
 import com.mab.buwisbuddyph.messages.InboxActivity
+import com.mab.buwisbuddyph.messages.TrashActivity
 import com.mab.buwisbuddyph.dataclass.new_Message
 import de.hdodenhof.circleimageview.CircleImageView
 
-class MessageListAdapter(private val messages: List<new_Message>) : RecyclerView.Adapter<MessageListAdapter.MessageViewHolder>() {
+class MessageListAdapter2(private val messages: List<new_Message>) : RecyclerView.Adapter<MessageListAdapter2.MessageViewHolder>() {
 
     class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val profileImage: CircleImageView = itemView.findViewById(R.id.circleImageView)
@@ -58,19 +59,20 @@ class MessageListAdapter(private val messages: List<new_Message>) : RecyclerView
 
     private fun showDeleteConfirmationDialog(context: Context, newnew_Message: new_Message) {
         val updateData = hashMapOf<String, Any>(
-            "is_trashed" to true
+            "is_trashed" to false
         )
         val alertDialogBuilder = AlertDialog.Builder(context)
-        alertDialogBuilder.setTitle("Trash Message")
-        alertDialogBuilder.setMessage("Are you sure you want to trash this message?")
-        alertDialogBuilder.setPositiveButton("Delete") { dialogInterface: DialogInterface, _: Int ->
+        alertDialogBuilder.setTitle("Retrieve Message")
+        alertDialogBuilder.setMessage("Are you sure you want to retrieve this message?")
+        alertDialogBuilder.setPositiveButton("Retrieve") { dialogInterface: DialogInterface, _: Int ->
             // Perform action when "Trash" button is clicked
             // Add your logic here to move the message to trash
             FirebaseFirestore.getInstance().collection("Chats").document(newnew_Message.chatId).update(updateData) .addOnSuccessListener {
-                Toast.makeText(context, "Message trashed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Message retrieved", Toast.LENGTH_SHORT).show()
                 dialogInterface.dismiss()
-                val intent = Intent(context, InboxActivity::class.java)
+                val intent = Intent(context, TrashActivity::class.java)
                 context.startActivity(intent)
+
             }
 
         }
