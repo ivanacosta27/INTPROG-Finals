@@ -45,4 +45,5 @@ class CommentListAdapter(private val commentList: List<Comment>) : RecyclerView.
 
 
     override fun getItemCount() = commentList.size
+
 }

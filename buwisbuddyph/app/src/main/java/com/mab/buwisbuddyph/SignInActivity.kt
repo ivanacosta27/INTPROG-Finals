@@ -12,6 +12,7 @@ import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mab.buwisbuddyph.home.HomeActivity
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth

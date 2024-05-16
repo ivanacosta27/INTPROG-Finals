@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph
+package com.mab.buwisbuddyph.home
 
 import android.os.Bundle
 import android.util.Log
@@ -16,8 +16,12 @@ import java.io.InputStream
 import java.io.OutputStream
 import android.provider.MediaStore
 import android.content.ContentValues
+import android.content.Intent
 import android.os.Build
+import com.mab.buwisbuddyph.R
+import com.mab.buwisbuddyph.calendar.CalendarFragment
 import com.mab.buwisbuddyph.forum.ForumFragment
+import com.mab.buwisbuddyph.messages.ConversationListActivity
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +44,11 @@ class HomeActivity : AppCompatActivity() {
         val messageIcon = findViewById<ImageView>(R.id.messagesIcon)
         messageIcon.setOnClickListener{
             toMessages()
+        }
+
+        val calendarIcon = findViewById<ImageView>(R.id.calendarIcon)
+        calendarIcon.setOnClickListener{
+            toCalendar()
         }
 
         val options = GmsDocumentScannerOptions.Builder()
@@ -127,10 +136,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun toMessages(){
-//        val messagesFragment = MessagesFragment()
-//        supportFragmentManager.beginTransaction().apply {
-//            replace(R.id.frameLayout, messagesFragment)
-//            commit()
-//        }
+        val intent = Intent(this, ConversationListActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun toCalendar(){
+        val calendarFragment = CalendarFragment()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayout, calendarFragment)
+            commit()
+        }
     }
 }

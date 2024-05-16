@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".messages.ConversationListActivity"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
@@ -25,15 +28,14 @@
             android:name=".messages.TrashActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".home.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".SignUpActivity"
             android:exported="false" />
         <activity android:name=".activities.ChatActivity" />
         <activity android:name=".activities.CreateMessageActivity" />
-
-    <activity
+        <activity
             android:name=".SignInActivity"
             android:exported="true"
             android:theme="@style/Theme.Design.Light.NoActionBar"
