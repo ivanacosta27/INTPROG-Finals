@@ -53,6 +53,9 @@ class SignInActivity : AppCompatActivity() {
             return
         }
 
+        val loadingDialog = LoadingDialog(this)
+        loadingDialog.loginLoadingDialog()
+
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -60,6 +63,7 @@ class SignInActivity : AppCompatActivity() {
                         .whereEqualTo("userEmail", email)
                         .get()
                         .addOnSuccessListener { documents ->
+                            loadingDialog.dismissDialog()
                             if (!documents.isEmpty) {
                                 val intent = Intent(this, HomeActivity::class.java)
                                 startActivity(intent)
@@ -68,13 +72,18 @@ class SignInActivity : AppCompatActivity() {
                             }
                         }
                         .addOnFailureListener { exception ->
+                            loadingDialog.dismissDialog()
                             Snackbar.make(view, "Error retrieving user document: ${exception.message}", Snackbar.LENGTH_SHORT).show()
                         }
                 } else {
+                    // Dismiss the dialog when authentication fails
+                    loadingDialog.dismissDialog()
+
                     Snackbar.make(view, "Authentication failed: ${task.exception?.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
     }
+
 
     private fun onSignUp(view: View){
         val intent = Intent(this, SignUpActivity::class.java)
