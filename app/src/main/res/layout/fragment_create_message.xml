@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".messages.CreateMessageFragment">
+
+        <TextView
+            android:id="@+id/receiverTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/to"
+            android:textSize="20sp"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/conversationRV"
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/receiverTV"
+            android:layout_above="@+id/createMessageLayout"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/conversation_list_item"/>
+
+
+        <LinearLayout
+            android:id="@+id/createMessageLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/createMessageET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/lorem_short"
+                android:background="@drawable/square_border_default"
+                android:inputType="text"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:textSize="15sp"
+                android:minHeight="50dp"/>
+
+            <ImageView
+                android:id="@+id/sendMessage"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:contentDescription="@string/send_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/send_icon"/>
+
+        </LinearLayout>
+
+</RelativeLayout>
