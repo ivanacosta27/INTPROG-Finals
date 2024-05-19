@@ -64,7 +64,7 @@ class ChatActivity : AppCompatActivity() {
                             other_id = userDocu.getString("userID").toString()
                         }
                     }
-                }else{
+                } else {
                     chatDocs.getString("person_1")?.let {
                         db.collection("users").document(it).get().addOnSuccessListener { userDocu ->
 //                        avatar.setImageDrawable("/${}userDocu.getString("userProfileImage") ?: "")
@@ -113,36 +113,38 @@ class ChatActivity : AppCompatActivity() {
     override fun onBackPressed() {
         // Check if the EditText is not blank
         val textLeft = editText.text.toString().trim()
-        if (textLeft.isNotEmpty()) {
-            saveToArchives(textLeft)
-        } else {
-            super.onBackPressed() // If EditText is blank, proceed with the default back behavior
-        }
+        saveToArchives(textLeft)
+        super.onBackPressed()
     }
 
     private fun saveToArchives(textLeft: String) {
         // Create a new document in the "archives" collection
-        val archivesRef = db.collection("archives").document(other_id)
 
-        // Define the data to be saved
-        val data = hashMapOf(
-            "my_id" to auth.currentUser?.uid,
-            "text_left" to textLeft,
-            "chat_id" to intent.getStringExtra("chatID") // Assuming you pass chatID via Intent
-        )
+        if (textLeft == "") {
+            val archivesRef = db.collection("archives").document(other_id)
+            archivesRef.delete()
+        } else {
+            val archivesRef = db.collection("archives").document(other_id)
+            // Define the data to be saved
+            val data = hashMapOf(
+                "my_id" to auth.currentUser?.uid,
+                "text_left" to textLeft,
+                "chat_id" to intent.getStringExtra("chatID") // Assuming you pass chatID via Intent
+            )
 
-        // Save the data to Firestore
-        archivesRef.set(data)
-            .addOnSuccessListener {
-                // Document saved successfully
-                super.onBackPressed() // Proceed with the default back behavior
-            }
-            .addOnFailureListener { e ->
-                // Handle any errors
-                // You can choose to show a toast or log the error
-                // For now, let's just log the error
-                Log.e("YourActivity", "Error saving to archives", e)
-            }
+            // Save the data to Firestore
+            archivesRef.set(data)
+                .addOnSuccessListener {
+                    // Document saved successfully
+                    super.onBackPressed() // Proceed with the default back behavior
+                }
+                .addOnFailureListener { e ->
+                    // Handle any errors
+                    // You can choose to show a toast or log the error
+                    // For now, let's just log the error
+                    Log.e("YourActivity", "Error saving to archives", e)
+                }
+        }
     }
 
 
@@ -158,7 +160,7 @@ class ChatActivity : AppCompatActivity() {
 
         // Update last_message field in the main document
         val chatRef = db.collection("Chats").document(chatID)
-        chatRef.update("last_message", message)
+        chatRef.update("last_message", message, "is_trashed", false)
             .addOnSuccessListener {
                 Log.d("ChatActivity", "Last message updated successfully")
             }

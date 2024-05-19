@@ -118,6 +118,8 @@ class CreateMessageActivity : AppCompatActivity() {
                                 // Chat already exists, retrieve chatID and start ChatActivity
                                 val chatID = documents.documents[0].id
                                 val intent = Intent(this, ChatActivity::class.java)
+                                //Update if trashed
+//                                db.collection("Chats").document(documents.documents[0].id).update("is_trashed" , true)
                                 intent.putExtra("chatID", chatID)
                                 startActivity(intent)
                             } else {
