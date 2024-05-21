@@ -5,8 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +33,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var createAccountButton: Button
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var spinner: Spinner
 
     companion object {
         private const val TAG = "SignUpActivity"
@@ -50,6 +53,22 @@ class SignUpActivity : AppCompatActivity() {
         userPasswordET = findViewById(R.id.userPasswordET)
         userPasswordConfirmationET = findViewById(R.id.userPasswordConfirmationET)
         createAccountButton = findViewById(R.id.createAccountButton)
+        spinner = findViewById(R.id.spinner)
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.user_type_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinner.adapter = adapter
+        }
+
+        // Set default value
+        spinner.setSelection((spinner.adapter as ArrayAdapter<String>).getPosition("Freelancer"))
 
         birthDateET.setOnClickListener {
             showDatePicker()
@@ -88,6 +107,7 @@ class SignUpActivity : AppCompatActivity() {
         val userEmail = userEmailET.text.toString().trim()
         val userPassword = userPasswordET.text.toString().trim()
         val userPasswordConfirmation = userPasswordConfirmationET.text.toString().trim()
+        val userAccountType = spinner.selectedItem.toString()
 
         setEditTextBackground(userFullNameET, userFullName.isEmpty())
         setEditTextBackground(birthDateET, birthDate.isEmpty())
@@ -119,7 +139,8 @@ class SignUpActivity : AppCompatActivity() {
                             "birthdate" to birthDate,
                             "userEmail" to userEmail.lowercase(Locale.ROOT),
                             "userProfileImage" to userProfileImage,
-                            "createDate" to Timestamp.now() as Any
+                            "createDate" to Timestamp.now() as Any,
+                            "userAccountType" to userAccountType
                         )
 
                         if (imageUri != null) {
@@ -190,4 +211,3 @@ class SignUpActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 }
-

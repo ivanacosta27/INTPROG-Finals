@@ -43,5 +43,12 @@
     <string name="settings">Settings</string>
     <string name="logout">Logout</string>
     <string name="comment_button">comment button</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
+
+    <string-array name="user_type_array">
+        <item>Freelancer</item>
+        <item>Accountant</item>
+    </string-array>
+
+
 </resources>

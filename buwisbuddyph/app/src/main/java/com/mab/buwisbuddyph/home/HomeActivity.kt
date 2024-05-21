@@ -18,6 +18,7 @@ import android.provider.MediaStore
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Build
+import com.mab.buwisbuddyph.ProfileActivity
 import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.calendar.CalendarFragment
 import com.mab.buwisbuddyph.forum.ForumFragment
@@ -49,6 +50,12 @@ class HomeActivity : AppCompatActivity() {
         val calendarIcon = findViewById<ImageView>(R.id.calendarIcon)
         calendarIcon.setOnClickListener{
             toCalendar()
+        }
+
+        val userProfileImage =  findViewById<ImageView>(R.id.userProfileImage)
+        userProfileImage.setOnClickListener{
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
         }
 
         val options = GmsDocumentScannerOptions.Builder()
