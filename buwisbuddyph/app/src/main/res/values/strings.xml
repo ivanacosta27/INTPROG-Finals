@@ -44,6 +44,7 @@
     <string name="logout">Logout</string>
     <string name="comment_button">comment button</string>
     <string name="loading">Loading…</string>
+    <string name="hamburger_icon">hamburger icon</string>
 
     <string-array name="user_type_array">
         <item>Freelancer</item>
