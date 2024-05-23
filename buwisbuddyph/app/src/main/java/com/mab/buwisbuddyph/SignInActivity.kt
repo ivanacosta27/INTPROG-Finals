@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.home.HomeActivity
 
+
 class SignInActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
@@ -76,9 +77,7 @@ class SignInActivity : AppCompatActivity() {
                             Snackbar.make(view, "Error retrieving user document: ${exception.message}", Snackbar.LENGTH_SHORT).show()
                         }
                 } else {
-                    // Dismiss the dialog when authentication fails
                     loadingDialog.dismissDialog()
-
                     Snackbar.make(view, "Authentication failed: ${task.exception?.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
