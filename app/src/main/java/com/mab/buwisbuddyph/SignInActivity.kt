@@ -1,8 +1,6 @@
 package com.mab.buwisbuddyph
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -14,11 +12,12 @@ import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mab.buwisbuddyph.home.HomeActivity
+
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,16 +28,6 @@ class SignInActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
-        sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-
-        // Check if userId is available in SharedPreferences
-        val userId = sharedPreferences.getString("userId", "")
-        if (!userId.isNullOrEmpty()) {
-            // Redirect to HomeActivity
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish() // Finish current activity to prevent going back to SignInActivity
-        }
 
         val loginButton = findViewById<Button>(R.id.loginButton)
         loginButton.setOnClickListener { view ->
@@ -47,7 +36,7 @@ class SignInActivity : AppCompatActivity() {
 
         val signUpTV = findViewById<TextView>(R.id.signUpTV)
         signUpTV.setOnClickListener{ view ->
-            onSignUp(view)
+            onSignUp(view )
         }
 
         val forgotPasswordTV = findViewById<TextView>(R.id.forgotPasswordTV)
@@ -65,23 +54,18 @@ class SignInActivity : AppCompatActivity() {
             return
         }
 
+        val loadingDialog = LoadingDialog(this)
+        loadingDialog.loginLoadingDialog()
+
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val userId = auth.currentUser?.uid ?: ""
-                    db.collection("users").document(userId).get()
-                        .addOnSuccessListener { document ->
-                            if (document.exists()) {
-                                val userFullName = document.getString("userFullName") ?: ""
-                                val userProfileImage = document.getString("userProfileImage") ?: ""
-
-                                // Save data to SharedPreferences
-                                val editor = sharedPreferences.edit()
-                                editor.putString("userId", userId)
-                                editor.putString("userFullName", userFullName)
-                                editor.putString("userProfileImage", userProfileImage)
-                                editor.apply()
-
+                    db.collection("users")
+                        .whereEqualTo("userEmail", email)
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            loadingDialog.dismissDialog()
+                            if (!documents.isEmpty) {
                                 val intent = Intent(this, HomeActivity::class.java)
                                 startActivity(intent)
                             } else {
@@ -89,13 +73,16 @@ class SignInActivity : AppCompatActivity() {
                             }
                         }
                         .addOnFailureListener { exception ->
+                            loadingDialog.dismissDialog()
                             Snackbar.make(view, "Error retrieving user document: ${exception.message}", Snackbar.LENGTH_SHORT).show()
                         }
                 } else {
+                    loadingDialog.dismissDialog()
                     Snackbar.make(view, "Authentication failed: ${task.exception?.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
     }
+
 
     private fun onSignUp(view: View){
         val intent = Intent(this, SignUpActivity::class.java)
@@ -106,4 +93,5 @@ class SignInActivity : AppCompatActivity() {
         val intent = Intent(this, ForgotPasswordActivity::class.java)
         startActivity(intent)
     }
+
 }

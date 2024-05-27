@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,7 +16,34 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".BudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GuideActivity"
+            android:exported="false" />
+        <activity
+            android:name=".home.DocumentDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".home.DocumentListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".forum.SearchForumActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TaxCalculatorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".accountant.AccountantProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".accountant.AccountantHelpActivity"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".messages.InboxActivity"
@@ -25,15 +55,21 @@
             android:name=".messages.TrashActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".home.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".forum.PostActivity"
             android:exported="false" />
         <activity
             android:name=".SignUpActivity"
             android:exported="false" />
-        <activity android:name=".activities.ChatActivity" />
-        <activity android:name=".activities.CreateMessageActivity" />
-
-    <activity
+        <activity
+            android:name=".messages.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".messages.CreateMessageActivity"
+            android:exported="false" />
+        <activity
             android:name=".SignInActivity"
             android:exported="true"
             android:theme="@style/Theme.Design.Light.NoActionBar"

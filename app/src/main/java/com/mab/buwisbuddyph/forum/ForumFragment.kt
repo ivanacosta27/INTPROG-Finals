@@ -1,5 +1,6 @@
 package com.mab.buwisbuddyph.forum
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
-import com.mab.buwisbuddyph.adaptors.PostListAdapter
+import com.mab.buwisbuddyph.adapters.PostListAdapter
 import com.mab.buwisbuddyph.dataclass.Post
 
 class ForumFragment : Fragment() {
@@ -21,6 +22,7 @@ class ForumFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var recyclerView: RecyclerView
     private lateinit var postListAdapter: PostListAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,11 +39,16 @@ class ForumFragment : Fragment() {
         recyclerView.adapter = postListAdapter
 
         loadPosts()
-        Log.d("forumFragment", "posts loaded")
 
         val createPost: ImageView = view.findViewById(R.id.createPost)
         createPost.setOnClickListener {
             onCreatePost(it)
+        }
+
+        val searchPost: ImageView = view.findViewById(R.id.search_button)
+        searchPost.setOnClickListener{
+            val intent = Intent(requireContext(), SearchForumActivity::class.java)
+            startActivity(intent)
         }
 
         return view
@@ -50,7 +57,7 @@ class ForumFragment : Fragment() {
 
     private fun loadPosts() {
         db.collection("posts")
-            .orderBy("timestamp") // Order posts by timestamp in ascending order
+            .orderBy("postTimestamp")
             .get()
             .addOnSuccessListener { querySnapshot ->
                 val posts = mutableListOf<Post>()

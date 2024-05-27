@@ -35,4 +35,57 @@
     <string name="search">Search</string>
     <string name="search_button">search button</string>
     <string name="back_button">back button</string>
+    <string name="number">Number</string>
+    <string name="gender">Gender</string>
+    <string name="tin">TIN</string>
+    <string name="email">Email</string>
+    <string name="edit">EDIT</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="comment_button">comment button</string>
+    <string name="loading">Loading…</string>
+    <string name="hamburger_icon">hamburger icon</string>
+    <string name="juan_dela_cruz">Juan Dela Cruz</string>
+    <string name="professional_help">Professional Help</string>
+    <string name="profile">Profile</string>
+    <string name="my_profile">My Profile</string>
+    <string name="create_budget">Create Budget</string>
+    <string name="in_app_purchases">In-App Purchases</string>
+    <string name="guides">Guides</string>
+    <string name="returns">Return</string>
+    <string name="return_to_previous">return</string>
+    <string name="rating">*****</string>
+    <string name="tax_calculator">Tax Calculator</string>
+    <string name="monthly_income">Monthly Income</string>
+    <string name="calculate">Calculate</string>
+    <string name="sss">SSS Contribution</string>
+    <string name="philhealth">PhilHealth</string>
+    <string name="quareterly_income_tax">Quareterly Income Tax</string>
+    <string name="annual_income_tax">Annual Income Tax</string>
+    <string name="monthly_income_tax">Monthly Income Tax</string>
+
+    <string name="graduated_income_tax">Graduated Income Tax Rates</string>
+    <string name="flat_income_tax">8% Flat Rate</string>
+    <string name="contribution_format">PHP %.2f</string>
+    <string name="tax_format">PHP %.2f</string>
+    <string name="best_tax_method">Best Taxation Method: %s</string>
+    <string name="search_forum">search forum</string>
+    <string name="document_list">Document List</string>
+
+
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
+    <string name="enter_budget">ENTER BUDGET</string>
+    <string name="enter">ENTER</string>
+    <string name="remaining_budget">Remaining Budget</string>
+    <string name="enter_expense">Enter Expense</string>
+    <string name="enter_expense_label">Enter Expense Label</string>
+    <string name="create_new_budget">Create New Budget</string>
+
+    <string-array name="user_type_array">
+        <item>Freelancer</item>
+        <item>Accountant</item>
+    </string-array>
+
+
 </resources>

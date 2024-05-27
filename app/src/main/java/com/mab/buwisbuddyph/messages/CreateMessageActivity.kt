@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph.activities
+package com.mab.buwisbuddyph.messages
 
 import android.content.Context
 import android.content.Intent
@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
-import com.mab.buwisbuddyph.adaptors.UserAdapter
-import com.mab.buwisbuddyph.models.new_User
+import com.mab.buwisbuddyph.adapters.UserAdapter
+import com.mab.buwisbuddyph.dataclass.new_User
 
 class CreateMessageActivity : AppCompatActivity() {
 

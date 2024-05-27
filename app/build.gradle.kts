@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.mab.buwisbuddyph"
-        minSdk = 23
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -53,8 +53,13 @@ android {
 }
 
 dependencies {
+    implementation ("com.github.bumptech.glide:glide:4.13.2")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.13.2")
+    implementation ("com.google.android.material:material:1.4.0")
 
-    implementation("com.google.firebase:firebase-appcheck:16.0.0-beta01")
+    implementation("com.google.firebase:firebase-appcheck:16.0.0-beta01") {
+        exclude(group = "com.google.android.gms", module = "play-services-ads")
+    }
     implementation("com.google.android.gms:play-services-mlkit-document-scanner:16.0.0-beta1")
     implementation(libs.coilCompose)
     implementation(libs.picasso)
@@ -71,10 +76,26 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.firestore.ktx)
-    implementation(libs.firebase.storage.ktx)
-    implementation(libs.firebase.appcheck.debug)
+    implementation(libs.firebase.auth.ktx) {
+        exclude(group = "com.google.android.gms", module = "play-services-ads")
+    }
+    implementation(libs.firebase.firestore.ktx) {
+        exclude(group = "com.google.android.gms", module = "play-services-ads")
+    }
+    implementation(libs.firebase.storage.ktx) {
+        exclude(group = "com.google.android.gms", module = "play-services-ads")
+    }
+    implementation(libs.firebase.appcheck.debug) {
+        exclude(group = "com.google.android.gms", module = "play-services-ads")
+    }
+    implementation(libs.firebase.database.ktx) {
+        exclude(group = "com.google.android.gms", module = "play-services-ads")
+    }
+    implementation(libs.volley)
+    // Ensure this library does not bring in ads SDK
+    implementation(libs.mediation.test.suite) {
+        exclude(group = "com.google.android.gms", module = "play-services-ads")
+    }
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -82,8 +103,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation ("com.github.bumptech.glide:glide:4.13.2")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.13.2")
-    implementation ("com.google.android.material:material:1.4.0")
-
 }

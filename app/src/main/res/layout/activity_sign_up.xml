@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/home_color"
+    android:background="@drawable/sign_background"
     tools:context=".SignUpActivity">
 
     <LinearLayout
@@ -127,6 +127,14 @@
                 android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="60sp"
+            android:layout_marginTop="15sp"
+            android:background="@drawable/square_border_default"/>
+
 
         <Button
             android:id="@+id/createAccountButton"

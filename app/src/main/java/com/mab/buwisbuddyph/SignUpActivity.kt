@@ -5,8 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +16,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.mab.buwisbuddyph.home.HomeActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.Calendar
 import java.util.Locale
@@ -30,6 +33,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var createAccountButton: Button
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var spinner: Spinner
 
     companion object {
         private const val TAG = "SignUpActivity"
@@ -49,17 +53,27 @@ class SignUpActivity : AppCompatActivity() {
         userPasswordET = findViewById(R.id.userPasswordET)
         userPasswordConfirmationET = findViewById(R.id.userPasswordConfirmationET)
         createAccountButton = findViewById(R.id.createAccountButton)
+        spinner = findViewById(R.id.spinner)
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.user_type_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+
+        spinner.setSelection((spinner.adapter as ArrayAdapter<String>).getPosition("Freelancer"))
 
         birthDateET.setOnClickListener {
             showDatePicker()
         }
-
         userProfileImg.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             pickImageContract.launch(intent)
         }
-
         createAccountButton.setOnClickListener {
             createUser()
         }
@@ -87,6 +101,7 @@ class SignUpActivity : AppCompatActivity() {
         val userEmail = userEmailET.text.toString().trim()
         val userPassword = userPasswordET.text.toString().trim()
         val userPasswordConfirmation = userPasswordConfirmationET.text.toString().trim()
+        val userAccountType = spinner.selectedItem.toString()
 
         setEditTextBackground(userFullNameET, userFullName.isEmpty())
         setEditTextBackground(birthDateET, birthDate.isEmpty())
@@ -118,7 +133,8 @@ class SignUpActivity : AppCompatActivity() {
                             "birthdate" to birthDate,
                             "userEmail" to userEmail.lowercase(Locale.ROOT),
                             "userProfileImage" to userProfileImage,
-                            "createDate" to Timestamp.now() as Any
+                            "createDate" to Timestamp.now() as Any,
+                            "userAccountType" to userAccountType
                         )
 
                         if (imageUri != null) {
@@ -189,4 +205,3 @@ class SignUpActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 }
-

@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph.model
+package com.mab.buwisbuddyph.dataclass
 
 data class new_Message(
     val avatarUrl: String, // URL of the avatar image

@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph.models
+package com.mab.buwisbuddyph.dataclass
 
 data class ChatMessage(
     val senderId: String = "",

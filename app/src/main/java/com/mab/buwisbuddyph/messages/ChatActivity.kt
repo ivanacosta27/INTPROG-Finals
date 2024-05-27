@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph.activities
+package com.mab.buwisbuddyph.messages
 
 import android.os.Bundle
 import android.util.Log
@@ -14,9 +14,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.mab.buwisbuddyph.R
-import com.mab.buwisbuddyph.adaptors.ChatAdapter
-import com.mab.buwisbuddyph.model.new_Message
-import com.mab.buwisbuddyph.models.ChatMessage
+import com.mab.buwisbuddyph.adapters.ChatAdapter
+import com.mab.buwisbuddyph.dataclass.new_Message
+import com.mab.buwisbuddyph.dataclass.ChatMessage
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ChatActivity : AppCompatActivity() {

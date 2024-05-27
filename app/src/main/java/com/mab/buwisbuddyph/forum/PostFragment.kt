@@ -7,13 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.dataclass.Post
-import java.util.Date
 
 class PostFragment : Fragment() {
 
@@ -43,6 +44,12 @@ class PostFragment : Fragment() {
             savePost()
         }
 
+
+        val returnIcon = view.findViewById<ImageView>(R.id.returnIcon)
+        returnIcon.setOnClickListener{
+            requireActivity().onBackPressed()
+        }
+
         return view
     }
 
@@ -65,10 +72,12 @@ class PostFragment : Fragment() {
 
                     val postId = db.collection("posts").document().id
                     val post = Post(
-                        content = postContent,
+                        postTitle = postTitle,
+                        postDescription = postDesc,  // Set the post description
+                        postContent = postContent,
                         postID = postId,
-                        timestamp = Date(),
-                        userId = userId
+                        postTimestamp = Timestamp.now(),
+                        postPosterID = userId
                     )
 
                     db.collection("posts")

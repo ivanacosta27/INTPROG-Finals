@@ -19,6 +19,9 @@ firebaseFirestoreKtx = "25.0.0"
 firebaseStorageKtx = "21.0.0"
 coilCompose = "1.4.0"
 firebaseAppcheckDebug = "18.0.0"
+firebaseDatabaseKtx = "21.0.0"
+volley = "1.2.1"
+mediationTestSuite = "3.0.0"
 
 [libraries]
 coilCompose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
@@ -46,6 +49,9 @@ firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx",
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
 firebase-appcheck-debug = { group = "com.google.firebase", name = "firebase-appcheck-debug", version.ref = "firebaseAppcheckDebug" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
+volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
+mediation-test-suite = { group = "com.google.android.ads", name = "mediation-test-suite", version.ref = "mediationTestSuite" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
