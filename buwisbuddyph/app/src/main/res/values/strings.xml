@@ -79,6 +79,7 @@
     <string name="enter">ENTER</string>
     <string name="remaining_budget">Remaining Budget</string>
     <string name="enter_expense">Enter Expense</string>
+    <string name="enter_expense_label">Enter Expense Label</string>
 
     <string-array name="user_type_array">
         <item>Freelancer</item>
