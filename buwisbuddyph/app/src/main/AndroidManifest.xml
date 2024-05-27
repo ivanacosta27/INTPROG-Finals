@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
+        <activity
+            android:name=".BudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GuideActivity"
+            android:exported="false" />
+        <activity
+            android:name=".home.DocumentDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".home.DocumentListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".forum.SearchForumActivity"
+            android:exported="false" />
         <activity
             android:name=".TaxCalculatorActivity"
             android:exported="false" />

@@ -1,5 +1,6 @@
 package com.mab.buwisbuddyph.forum
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -42,6 +43,12 @@ class ForumFragment : Fragment() {
         val createPost: ImageView = view.findViewById(R.id.createPost)
         createPost.setOnClickListener {
             onCreatePost(it)
+        }
+
+        val searchPost: ImageView = view.findViewById(R.id.search_button)
+        searchPost.setOnClickListener{
+            val intent = Intent(requireContext(), SearchForumActivity::class.java)
+            startActivity(intent)
         }
 
         return view

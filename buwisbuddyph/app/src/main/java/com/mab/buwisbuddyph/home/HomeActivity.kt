@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -21,31 +22,39 @@ import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_JPEG
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_PDF
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.SCANNER_MODE_FULL
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
+import com.mab.buwisbuddyph.GuideActivity
 import com.mab.buwisbuddyph.ProfileActivity
 import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.SignInActivity
 import com.mab.buwisbuddyph.TaxCalculatorActivity
 import com.mab.buwisbuddyph.accountant.AccountantHelpActivity
+import com.mab.buwisbuddyph.calendar.CalendarFragment
 import com.mab.buwisbuddyph.forum.ForumFragment
 import com.mab.buwisbuddyph.messages.MessagesFragment
 import java.io.InputStream
 import java.io.OutputStream
+import java.util.UUID
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var auth: FirebaseAuth
+    private val db = FirebaseFirestore.getInstance()
+    private lateinit var storageRef: StorageReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         auth = FirebaseAuth.getInstance()
+        storageRef = FirebaseStorage.getInstance().reference
 
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.navigation_view)
@@ -58,7 +67,17 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         updateProfileInfo()
 
-        toHome()
+
+        val userProfileImage = findViewById<ImageView>(R.id.userProfileImage)
+        userProfileImage.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        val calendarIcon = findViewById<ImageView>(R.id.calendarIcon)
+        calendarIcon.setOnClickListener {
+            Log.d("calendar", "calendar icon clicked")
+            toCalendar()
+        }
 
         val forumIcon = findViewById<ImageView>(R.id.forumIcon)
         forumIcon.setOnClickListener {
@@ -71,10 +90,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             toHome()
         }
 
-        val userProfileImage = findViewById<ImageView>(R.id.userProfileImage)
-        userProfileImage.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
 
         val messageIcon = findViewById<ImageView>(R.id.messagesIcon)
         messageIcon.setOnClickListener {
@@ -93,67 +108,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (result.resultCode == RESULT_OK) {
                 val scanningResult = GmsDocumentScanningResult.fromActivityResultIntent(result.data)
                 if (scanningResult != null) {
-                    scanningResult.pages?.let { pages ->
-                        for (page in pages) {
-                            val imageUri = page.imageUri
-                            // Save the image to the gallery
-                            val inputStream: InputStream? =
-                                contentResolver.openInputStream(imageUri)
-                            val contentValues = ContentValues().apply {
-                                put(MediaStore.MediaColumns.DISPLAY_NAME, "scanned_image.jpg")
-                                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                                    put(
-                                        MediaStore.MediaColumns.RELATIVE_PATH,
-                                        "Pictures/Scanned Documents"
-                                    )
-                                }
-                            }
-                            val newImageUri = contentResolver.insert(
-                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                contentValues
-                            )
-                            val outputStream: OutputStream? =
-                                newImageUri?.let { contentResolver.openOutputStream(it) }
-                            if (inputStream != null && outputStream != null) {
-                                inputStream.copyTo(outputStream)
-                                inputStream.close()
-                                outputStream.close()
-                            }
-                        }
-                    }
-                }
-                if (scanningResult != null) {
-                    scanningResult.pdf?.let { pdf ->
-                        val pdfUri = pdf.uri
-                        val pageCount = pdf.pageCount
-                        val inputStream: InputStream? = contentResolver.openInputStream(pdfUri)
-                        val contentValues = ContentValues().apply {
-                            put(MediaStore.MediaColumns.DISPLAY_NAME, "scanned_document.pdf")
-                            put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                                put(
-                                    MediaStore.MediaColumns.RELATIVE_PATH,
-                                    "Documents/Scanned Documents"
-                                )
-                            }
-                        }
-                        val newPdfUri = contentResolver.insert(
-                            MediaStore.Files.getContentUri("external"),
-                            contentValues
-                        )
-                        val outputStream: OutputStream? =
-                            newPdfUri?.let { contentResolver.openOutputStream(it) }
-                        if (inputStream != null && outputStream != null) {
-                            inputStream.copyTo(outputStream)
-                            inputStream.close()
-                            outputStream.close()
-                        }
-                    }
+                    saveScannedDocumentToFirebase(scanningResult)
+                    savePdfLocally(scanningResult)
                 }
             }
         }
-
         val cameraIcon = findViewById<ImageView>(R.id.cameraIcon)
         cameraIcon.setOnClickListener {
             scanner.getStartScanIntent(this@HomeActivity)
@@ -166,56 +125,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                drawerLayout.openDrawer(GravityCompat.START)
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
+    private fun toCalendar() {
+        val calendarFragment = CalendarFragment()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayout, calendarFragment)
+            commit()
         }
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_profile -> {
-                val intent = Intent(this,ProfileActivity::class.java)
-                startActivity(intent)
-            }
-
-            R.id.nav_create_budget -> {
-                // Handle create budget navigation
-            }
-
-            R.id.nav_professional_help -> {
-               val intent = Intent(this, AccountantHelpActivity::class.java)
-                startActivity(intent)
-            }
-
-            R.id.nav_tax_calculator -> {
-                val intent = Intent(this, TaxCalculatorActivity::class.java)
-                startActivity(intent)
-            }
-
-            R.id.nav_purchase -> {
-
-            }
-
-            R.id.nav_guides -> {
-                // Handle guides navigation
-            }
-
-            R.id.nav_settings -> {
-                // Handle settings navigation
-            }
-
-            R.id.nav_logout -> {
-                showLogoutConfirmationDialog()
-            }
-        }
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
     }
 
     private fun toForum() {
@@ -245,7 +160,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun updateProfileInfo() {
         val user = auth.currentUser
         if (user != null) {
-            // Assume you have a users collection in Firestore
             val userId = user.uid
             val db = FirebaseFirestore.getInstance()
             val userDocRef = db.collection("users").document(userId)
@@ -256,14 +170,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         val img = document.getString("userProfileImage")
                         val name = document.getString("userFullName")
                         val email = document.getString("userEmail")
-                        val headerView =
-                            findViewById<NavigationView>(R.id.navigation_view).getHeaderView(0)
-                        val profImageView =
-                            headerView.findViewById<ImageView>(R.id.userProfileImage)
+                        val navigationView = findViewById<NavigationView>(R.id.navigation_view)
+                        val headerView = navigationView.getHeaderView(0)
+                        val profImageView = headerView.findViewById<ImageView>(R.id.userProfileImage)
                         val nameTextView = headerView.findViewById<TextView>(R.id.user_name)
                         val emailTextView = headerView.findViewById<TextView>(R.id.user_email)
 
-                        if (img != null) {
+                        if (!img.isNullOrEmpty()) {
                             Glide.with(this).load(img).into(profImageView)
                         } else {
                             profImageView.setImageResource(R.drawable.default_profile_img)
@@ -278,6 +191,125 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Log.d("HomeActivity", "get failed with ", exception)
                 }
         }
+    }
+
+    private fun saveScannedDocumentToFirebase(scanningResult: GmsDocumentScanningResult) {
+        scanningResult.pages?.forEachIndexed { index, page ->
+            val imageUri = page.imageUri
+            uploadImageToFirebaseStorage(imageUri, index)
+        }
+    }
+
+    private fun uploadImageToFirebaseStorage(uri: Uri, index: Int) {
+        val imageRef = storageRef.child("image_${UUID.randomUUID()}.jpg")
+        val uploadTask = imageRef.putFile(uri)
+
+        uploadTask.addOnSuccessListener { taskSnapshot ->
+            Log.d("HomeActivity", "Image uploaded successfully")
+            imageRef.downloadUrl.addOnSuccessListener { imageUrl ->
+
+                val userId = auth.currentUser?.uid
+                if (userId != null) {
+                    val documentId = db.collection("users").document().id // Generate a unique document ID
+                    saveImageToDatabase(documentId, imageUrl.toString())
+                }
+            }
+                .addOnFailureListener { e ->
+                    Log.e("HomeActivity", "Error uploading image to Firebase Storage", e)
+                }
+        }
+    }
+
+    private fun saveImageToDatabase(documentId: String, imageUrl: String) {
+        val userId = auth.currentUser?.uid ?: return
+        val timestamp = System.currentTimeMillis()
+
+        val documentData = hashMapOf(
+            "documentID" to documentId,
+            "timestamp" to timestamp,
+            "documentImgLink" to imageUrl
+        )
+
+        db.collection("users").document(userId).collection("userDocuments").document(documentId)
+            .set(documentData)
+            .addOnSuccessListener {
+                Log.d("HomeActivity", "Document successfully added to Firestore")
+            }
+            .addOnFailureListener { e ->
+                Log.e("HomeActivity", "Error adding document to Firestore", e)
+            }
+    }
+
+    private fun savePdfLocally(scanningResult: GmsDocumentScanningResult) {
+        scanningResult.pdf?.let { pdf ->
+            val pdfUri = pdf.uri
+            val pageCount = pdf.pageCount
+            val inputStream: InputStream? = contentResolver.openInputStream(pdfUri)
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, "scanned_document.pdf")
+                // Adjust MIME type if needed
+                put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, "Documents/Scanned Documents")
+                }
+            }
+            val newPdfUri = contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
+            val outputStream: OutputStream? = newPdfUri?.let { contentResolver.openOutputStream(it) }
+            if (inputStream != null && outputStream != null) {
+                inputStream.copyTo(outputStream)
+                inputStream.close()
+                outputStream.close()
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                drawerLayout.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_profile -> {
+                val intent = Intent(this, ProfileActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_create_budget -> {
+                // Handle create budget navigation
+            }
+            R.id.nav_professional_help -> {
+                val intent = Intent(this, AccountantHelpActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_tax_calculator -> {
+                val intent = Intent(this, TaxCalculatorActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_document_list -> {
+                val intent = Intent(this, DocumentListActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_purchase -> {
+                // Handle purchase navigation
+            }
+            R.id.nav_guides -> {
+                val intent = Intent(this, GuideActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_settings -> {
+                // Handle settings navigation
+            }
+            R.id.nav_logout -> {
+                showLogoutConfirmationDialog()
+            }
+        }
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
     }
 
     private fun showLogoutConfirmationDialog() {
@@ -308,5 +340,4 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startActivity(intent)
         finish()
     }
-
 }
