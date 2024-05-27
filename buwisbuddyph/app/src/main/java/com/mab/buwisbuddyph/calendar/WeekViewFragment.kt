@@ -14,41 +14,33 @@ import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.calendar.CalendarUtils.daysInWeekArray
 import com.mab.buwisbuddyph.calendar.CalendarUtils.monthYearFromDate
 import java.time.LocalDate
-import java.util.Calendar
 
 class WeekViewFragment : Fragment(), CalendarAdapter.OnItemListener {
+
     private lateinit var monthYearText: TextView
     private lateinit var calendarRecyclerView: RecyclerView
     private lateinit var eventListView: ListView
 
-    companion object {
-        private const val SELECTED_DATE = "selected_date"
-
-        fun newInstance(selectedDate: Calendar): WeekViewFragment {
-            val fragment = WeekViewFragment()
-            val args = Bundle()
-            args.putSerializable(SELECTED_DATE, selectedDate)
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
-    private var selectedDate: LocalDate? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            selectedDate = it.getSerializable(SELECTED_DATE) as? LocalDate
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_week_view, container, false)
         initWidgets(view)
         setWeekView()
+
+        val newEventAction: Button = view.findViewById(R.id.newEventAction)
+        newEventAction.setOnClickListener{
+            newEventAction(view)
+        }
+
+        val previousWeekAction: Button = view.findViewById(R.id.previousWeekAction)
+        previousWeekAction.setOnClickListener{
+            previousWeekAction(view)
+        }
+
+        val nextWeekAction: Button = view.findViewById(R.id.nextWeekAction)
+        nextWeekAction.setOnClickListener{
+            nextWeekAction(view)
+        }
+
         return view
     }
 
@@ -56,65 +48,50 @@ class WeekViewFragment : Fragment(), CalendarAdapter.OnItemListener {
         calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView)
         monthYearText = view.findViewById(R.id.monthYearTV)
         eventListView = view.findViewById(R.id.eventListView)
-
-        val previousWeekAction: Button = view.findViewById(R.id.previousWeekAction)
-        previousWeekAction.setOnClickListener{
-            previousWeekAction()
-        }
-
-        val nextWeekAction: Button = view.findViewById(R.id.nextWeekAction)
-        nextWeekAction.setOnClickListener{
-            nextWeekAction()
-        }
-
-        val newEventAction: Button = view.findViewById(R.id.newEventAction)
-        newEventAction.setOnClickListener{
-            newEventAction()
-        }
     }
 
     private fun setWeekView() {
-        if (selectedDate != null) {
-            monthYearText.text = monthYearFromDate(selectedDate!!)
-            val days = daysInWeekArray(selectedDate!!)
-            val calendarAdapter = CalendarAdapter(ArrayList(days), this)
-            calendarRecyclerView.adapter = calendarAdapter
-            val layoutManager = GridLayoutManager(requireContext(), 7)
-            calendarRecyclerView.layoutManager = layoutManager
-            setEventAdapter()
-        } else {
-            // If selected date is null, initialize it with the current date
-            selectedDate = LocalDate.now()
-            setWeekView() // Call setWeekView() again to populate the view with the current date
-        }
+        monthYearText.text = CalendarUtils.selectedDate?.let { monthYearFromDate(it) }
+        val days = CalendarUtils.selectedDate?.let { daysInWeekArray(it) }
+        val daysArrayList = ArrayList<LocalDate?>(days ?: emptyList()) // Convert to ArrayList<LocalDate?>
+        val calendarAdapter = CalendarAdapter(daysArrayList, this)
+        calendarRecyclerView.layoutManager = GridLayoutManager(requireContext(), 7)
+        calendarRecyclerView.adapter = calendarAdapter
+        setEventAdapter()
     }
 
-    private fun previousWeekAction() {
-        selectedDate = selectedDate?.minusWeeks(1)
-        setWeekView()
-    }
 
-    private fun nextWeekAction() {
-        selectedDate = selectedDate?.plusWeeks(1)
+    override fun onItemClick(position: Int, date: LocalDate) {
+        CalendarUtils.selectedDate = date
         setWeekView()
     }
 
     private fun setEventAdapter() {
-        val dailyEvents = Event.eventsForDate(selectedDate!!)
-        val eventAdapter = EventAdapter(requireContext(), dailyEvents)
+        val dailyEvents = CalendarUtils.selectedDate?.let { Event.eventsForDate(it) }
+        val eventAdapter = dailyEvents?.let { EventAdapter(requireContext(), it) }
         eventListView.adapter = eventAdapter
     }
 
-    override fun onItemClick(position: Int, date: LocalDate) {
-        selectedDate = date
+    fun previousWeekAction(view: View) {
+        CalendarUtils.selectedDate = CalendarUtils.selectedDate?.minusWeeks(1)
         setWeekView()
     }
 
-    private fun newEventAction() {
-        val fragmentManager = requireActivity().supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
+    fun nextWeekAction(view: View) {
+        CalendarUtils.selectedDate = CalendarUtils.selectedDate?.plusWeeks(1)
+        setWeekView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setEventAdapter()
+    }
+
+    fun newEventAction(view: View) {
+        val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frameLayout, EventFragment())
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
+
 }

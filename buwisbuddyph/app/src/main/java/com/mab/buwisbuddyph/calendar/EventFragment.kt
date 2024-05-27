@@ -26,12 +26,12 @@ class EventFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_event, container, false)
         initWidgets(view)
         time = LocalTime.now()
-        eventDateTV.text = "Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate!!)
-        eventTimeTV.text = "Time: " + CalendarUtils.formattedTime(time)
+        eventDateTV.text = "Date: ${CalendarUtils.formattedDate(CalendarUtils.selectedDate!!)}"
+        eventTimeTV.text = "Time: ${CalendarUtils.formattedTime(time)}"
 
         val saveEventAction: Button = view.findViewById(R.id.saveEventAction)
         saveEventAction.setOnClickListener{
-            saveEventAction()
+            saveEventAction(view)
         }
 
         return view
@@ -43,13 +43,10 @@ class EventFragment : Fragment() {
         eventTimeTV = view.findViewById(R.id.eventTimeTV)
     }
 
-    private fun saveEventAction() {
+    fun saveEventAction(view: View) {
         val eventName = eventNameET.text.toString()
-        val newEvent = CalendarUtils.selectedDate?.let { Event(eventName, it, time) }
-        if (newEvent != null) {
-            Event.eventsList.add(newEvent)
-        }
-        requireActivity().supportFragmentManager.popBackStack()
+        val newEvent = Event(eventName, CalendarUtils.selectedDate!!, time)
+        Event.eventsList.add(newEvent)
+        activity?.supportFragmentManager?.popBackStack()
     }
-
 }

@@ -29,39 +29,47 @@ object CalendarUtils {
         val yearMonth = YearMonth.from(date)
 
         val daysInMonth = yearMonth.lengthOfMonth()
-
-        val firstOfMonth = selectedDate?.withDayOfMonth(1)
-        val dayOfWeek = firstOfMonth?.dayOfWeek?.value ?: 0
+        val firstOfMonth = date.withDayOfMonth(1)
+        val dayOfWeek = firstOfMonth.dayOfWeek.value
 
         for (i in 1..42) {
-            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek)
+            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                 daysInMonthArray.add(null)
-            else
-                daysInMonthArray.add(LocalDate.of(selectedDate!!.year, selectedDate!!.month, i - dayOfWeek))
+            } else {
+                val dayOfMonth = i - dayOfWeek
+                val formattedDate = LocalDate.of(date.year, date.month, dayOfMonth)
+                daysInMonthArray.add(formattedDate)
+            }
         }
         return daysInMonthArray
     }
 
+
+
+
+
     fun daysInWeekArray(selectedDate: LocalDate): ArrayList<LocalDate> {
         val days = ArrayList<LocalDate>()
         var current = sundayForDate(selectedDate)
-        val endDate = current.plusWeeks(1)
+        val endDate = current?.plusWeeks(1)
 
-        while (current.isBefore(endDate)) {
+        while (current?.isBefore(endDate) == true) {
             days.add(current)
             current = current.plusDays(1)
         }
         return days
     }
 
-    private fun sundayForDate(current: LocalDate): LocalDate {
-        var tempCurrent = current
-        val oneWeekAgo = tempCurrent.minusWeeks(1)
+    private fun sundayForDate(current: LocalDate): LocalDate? {
+        var current = current
+        val oneWeekAgo = current.minusWeeks(1)
 
-        while (tempCurrent.isAfter(oneWeekAgo)) {
-            if (tempCurrent.dayOfWeek == DayOfWeek.SUNDAY) return tempCurrent
-            tempCurrent = tempCurrent.minusDays(1)
+        while (current.isAfter(oneWeekAgo)) {
+            if (current.dayOfWeek == DayOfWeek.SUNDAY)
+                return current
+
+            current = current.minusDays(1)
         }
-        return tempCurrent
+        return null
     }
 }

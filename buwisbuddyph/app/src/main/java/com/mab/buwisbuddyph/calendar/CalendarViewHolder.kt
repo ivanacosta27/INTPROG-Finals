@@ -1,5 +1,7 @@
 package com.mab.buwisbuddyph.calendar
 
+
+
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -8,23 +10,19 @@ import java.time.LocalDate
 
 class CalendarViewHolder(
     itemView: View,
-    private val onItemListener: CalendarAdapter.OnItemListener
+    private val onItemListener: CalendarAdapter.OnItemListener,
+    private val days: ArrayList<LocalDate?>
 ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-    private var date: LocalDate? = null
+    val parentView: View = itemView.findViewById(R.id.parentView)
     val dayOfMonth: TextView = itemView.findViewById(R.id.cellDayText)
 
     init {
         itemView.setOnClickListener(this)
     }
 
-    fun bind(date: LocalDate) {
-        this.date = date
-        dayOfMonth.text = date.dayOfMonth.toString()
-    }
-
     override fun onClick(view: View) {
-        date?.let { onItemListener.onItemClick(adapterPosition, it) }
+        days[adapterPosition]?.let { onItemListener.onItemClick(adapterPosition, it) }
     }
-
 }
+
