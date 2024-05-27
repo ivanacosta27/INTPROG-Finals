@@ -30,6 +30,7 @@ import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.SCANNER_MODE_FULL
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
+import com.mab.buwisbuddyph.BudgetActivity
 import com.mab.buwisbuddyph.GuideActivity
 import com.mab.buwisbuddyph.ProfileActivity
 import com.mab.buwisbuddyph.R
@@ -122,6 +123,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .addOnFailureListener { exception ->
                     Log.e("HomeActivity", "Error starting scanner", exception)
                 }
+        }
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction().replace(R.id.frameLayout, HomeFragment()).commit()
         }
     }
 
@@ -280,7 +285,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_create_budget -> {
-                // Handle create budget navigation
+                val intent = Intent(this, BudgetActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_professional_help -> {
                 val intent = Intent(this, AccountantHelpActivity::class.java)
