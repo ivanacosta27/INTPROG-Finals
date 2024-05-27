@@ -24,6 +24,7 @@
                 android:id="@+id/returnIcon"
                 android:layout_width="40dp"
                 android:layout_height="30dp"
+                android:contentDescription="@string/return_to_previous"
                 android:src="@drawable/left_icon"
                 android:layout_centerVertical="true"
                 />

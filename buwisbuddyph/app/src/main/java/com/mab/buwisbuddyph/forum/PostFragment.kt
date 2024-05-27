@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.Timestamp
@@ -41,6 +42,12 @@ class PostFragment : Fragment() {
 
         postButton.setOnClickListener {
             savePost()
+        }
+
+
+        val returnIcon = view.findViewById<ImageView>(R.id.returnIcon)
+        returnIcon.setOnClickListener{
+            requireActivity().onBackPressed()
         }
 
         return view

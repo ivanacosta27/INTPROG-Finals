@@ -7,6 +7,7 @@ data class User(
     val userFullName: String = "",
     val userEmail: String = "",
     val userProfileImage: String = "",
-    val timestamp: Timestamp = Timestamp.now()
+    val timestamp: Timestamp = Timestamp.now(),
+    val userAccountType: String = ""
 )
 

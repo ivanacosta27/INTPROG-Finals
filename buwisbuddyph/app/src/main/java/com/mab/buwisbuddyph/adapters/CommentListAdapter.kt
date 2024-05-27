@@ -10,12 +10,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.dataclass.Comment
 import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 
-class CommentListAdapter(private val commentList: List<Comment>) : RecyclerView.Adapter<CommentListAdapter.CommentViewHolder>() {
+class CommentListAdapter(private val commentList: MutableList<Comment>) : RecyclerView.Adapter<CommentListAdapter.CommentViewHolder>() {
 
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val userProfileImage: de.hdodenhof.circleimageview.CircleImageView = itemView.findViewById(R.id.userProfileImage)
+        val userProfileImage: CircleImageView = itemView.findViewById(R.id.userProfileImage)
         val conversationTV: TextView = itemView.findViewById(R.id.conversationTV)
+        val userFullName: TextView = itemView.findViewById(R.id.userFullName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -32,6 +34,8 @@ class CommentListAdapter(private val commentList: List<Comment>) : RecyclerView.
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
+                    val userFullName = document.getString("userFullName")
+                    holder.userFullName.text = userFullName
                     val userProfileImageURL = document.getString("userProfileImageURL")
                     Picasso.get().load(userProfileImageURL).into(holder.userProfileImage) // Load the image with Picasso
                 } else {
@@ -43,7 +47,11 @@ class CommentListAdapter(private val commentList: List<Comment>) : RecyclerView.
             }
     }
 
-
     override fun getItemCount() = commentList.size
 
+    fun updateData(newComments: List<Comment>) {
+        commentList.clear()
+        commentList.addAll(newComments)
+        notifyDataSetChanged()
+    }
 }

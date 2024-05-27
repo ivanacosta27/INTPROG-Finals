@@ -9,6 +9,11 @@
     <item
         android:id="@+id/nav_professional_help"
         android:title="@string/professional_help" />
+
+    <item
+        android:id="@+id/nav_tax_calculator"
+        android:title="@string/tax_calculator" />
+
     <item
         android:id="@+id/nav_purchase"
         android:title="@string/in_app_purchases" />

@@ -30,6 +30,8 @@ import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
 import com.mab.buwisbuddyph.ProfileActivity
 import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.SignInActivity
+import com.mab.buwisbuddyph.TaxCalculatorActivity
+import com.mab.buwisbuddyph.accountant.AccountantHelpActivity
 import com.mab.buwisbuddyph.forum.ForumFragment
 import com.mab.buwisbuddyph.messages.MessagesFragment
 import java.io.InputStream
@@ -187,7 +189,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.nav_professional_help -> {
-                // Handle professional help navigation
+               val intent = Intent(this, AccountantHelpActivity::class.java)
+                startActivity(intent)
+            }
+
+            R.id.nav_tax_calculator -> {
+                val intent = Intent(this, TaxCalculatorActivity::class.java)
+                startActivity(intent)
             }
 
             R.id.nav_purchase -> {
@@ -203,7 +211,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.nav_logout -> {
-                // Handle logout navigation
                 showLogoutConfirmationDialog()
             }
         }

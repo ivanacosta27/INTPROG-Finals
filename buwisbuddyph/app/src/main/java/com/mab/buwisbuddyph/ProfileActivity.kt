@@ -1,12 +1,16 @@
 package com.mab.buwisbuddyph
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
+import android.widget.ImageView
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.mab.buwisbuddyph.home.HomeActivity
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -27,6 +31,17 @@ class ProfileActivity : AppCompatActivity() {
         val genderTV: EditText = findViewById(R.id.genderTV)
         val tinTV: EditText = findViewById(R.id.tinTV)
         val emailTV: EditText = findViewById(R.id.emailTV)
+
+        val returnIcon = findViewById<ImageView>(R.id.returnIcon)
+        returnIcon.setOnClickListener{
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        onBackPressedDispatcher.addCallback(this) {
+            val intent = Intent(this@ProfileActivity, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         if (currentUser != null) {
             db.collection("users").document(currentUser.uid)

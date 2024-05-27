@@ -1,10 +1,12 @@
 package com.mab.buwisbuddyph.forum
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,7 @@ import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.adapters.CommentListAdapter
 import com.mab.buwisbuddyph.dataclass.Comment
 import com.mab.buwisbuddyph.dataclass.Post
+import com.mab.buwisbuddyph.home.HomeActivity
 
 class PostActivity : AppCompatActivity() {
 
@@ -22,7 +25,7 @@ class PostActivity : AppCompatActivity() {
     private lateinit var postTitleTV: TextView
     private lateinit var postContentTV: TextView
     private lateinit var commentEditText: EditText
-    private lateinit var sendButton: ImageView
+    private lateinit var commentButton: ImageView
     private lateinit var commentListRV: RecyclerView
     private lateinit var commentListAdapter: CommentListAdapter
 
@@ -34,19 +37,30 @@ class PostActivity : AppCompatActivity() {
         postTitleTV = findViewById(R.id.postTitleTV)
         postContentTV = findViewById(R.id.postContentTV)
         commentEditText = findViewById(R.id.commentET)
-        sendButton = findViewById(R.id.commentButton)
+        commentButton = findViewById(R.id.commentButton)
 
         commentListRV = findViewById(R.id.commentListRV)
         commentListRV.layoutManager = LinearLayoutManager(this)
         commentListAdapter = CommentListAdapter(mutableListOf())
         commentListRV.adapter = commentListAdapter
 
+        val returnIcon = findViewById<ImageView>(R.id.returnIcon)
+        returnIcon.setOnClickListener{
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        onBackPressedDispatcher.addCallback(this) {
+            val intent = Intent(this@PostActivity, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         val postId = intent.getStringExtra("postId")
         if (postId != null) {
             loadPost(postId)
         }
 
-        sendButton.setOnClickListener {
+        commentButton.setOnClickListener {
             val commentText = commentEditText.text.toString()
             if (commentText.isNotEmpty()) {
                 val comment = Comment(
@@ -60,10 +74,15 @@ class PostActivity : AppCompatActivity() {
                     db.collection("posts").document(postId).collection("comments").add(comment)
                         .addOnSuccessListener { documentReference ->
                             documentReference.update("commentID", documentReference.id)
-                            println("Comment successfully written!")
+                                .addOnSuccessListener {
+                                    println("Comment successfully written!")
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e("PostActivity", "Error updating comment ID", e)
+                                }
                         }
                         .addOnFailureListener { e ->
-                            println("Error writing comment: $e")
+                            Log.e("PostActivity", "Error writing comment: $e")
                         }
                 }
 
@@ -83,24 +102,20 @@ class PostActivity : AppCompatActivity() {
 
                     db.collection("posts").document(postId).collection("comments")
                         .orderBy("commentTimestamp")
-                        .get()
-                        .addOnSuccessListener { commentDocuments ->
-                            val comments = commentDocuments.map { commentDocument ->
-                                commentDocument.toObject(Comment::class.java)
+                        .addSnapshotListener { commentDocuments, _ ->
+                            commentDocuments?.let { snapshot ->
+                                val comments = snapshot.documents.mapNotNull { commentDocument ->
+                                    commentDocument.toObject(Comment::class.java)
+                                }
+                                commentListAdapter.updateData(comments)
+                                commentListRV.scrollToPosition(comments.size - 1)
                             }
-                            val adapter = CommentListAdapter(comments)
-                            commentListRV.adapter = adapter
-                            commentListRV.scrollToPosition(adapter.itemCount - 1)
-                        }
-                        .addOnFailureListener { exception ->
-                            Log.e("PostActivity", "Error getting comments", exception)
                         }
                 }
             }
             .addOnFailureListener { exception ->
-                Log.d("PostActivity","Error getting post", exception)
+                Log.e("PostActivity", "Error getting post", exception)
             }
     }
-
 
 }
