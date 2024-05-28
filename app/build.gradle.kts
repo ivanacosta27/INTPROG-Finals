@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.mab.buwisbuddyph"
-        minSdk = 26
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -103,4 +103,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.25")
+
+    implementation ("com.google.android.gms:play-services-wallet:19.1.0")
+
+    implementation ("org.json:json:20210307")
+
+
 }

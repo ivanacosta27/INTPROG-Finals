@@ -13,9 +13,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
-import com.mab.buwisbuddyph.messages.ChatActivity
 import com.mab.buwisbuddyph.dataclass.new_Message
-import com.mab.buwisbuddyph.messages.InboxActivity
+import com.mab.buwisbuddyph.messages.ChatActivity
 import de.hdodenhof.circleimageview.CircleImageView
 
 class MessageListAdapter(private val messages: List<new_Message>, private val refreshListener: OnRefreshListener) : RecyclerView.Adapter<MessageListAdapter.MessageViewHolder>() {
@@ -60,7 +59,7 @@ class MessageListAdapter(private val messages: List<new_Message>, private val re
 
     override fun getItemCount() = messages.size
 
-    private fun showDeleteConfirmationDialog(context: Context, newnew_Message: new_Message) {
+    private fun showDeleteConfirmationDialog(context: Context, message: new_Message) {
         val updateData = hashMapOf<String, Any>(
             "is_trashed" to true
         )
@@ -68,16 +67,13 @@ class MessageListAdapter(private val messages: List<new_Message>, private val re
         alertDialogBuilder.setTitle("Trash Message")
         alertDialogBuilder.setMessage("Are you sure you want to trash this message?")
         alertDialogBuilder.setPositiveButton("Delete") { dialogInterface: DialogInterface, _: Int ->
-            // Perform action when "Trash" button is clicked
-            // Add your logic here to move the message to trash
-            FirebaseFirestore.getInstance().collection("Chats").document(newnew_Message.chatId).update(updateData) .addOnSuccessListener {
+            FirebaseFirestore.getInstance().collection("Chats").document(message.chatId).update(updateData).addOnSuccessListener {
                 Toast.makeText(context, "Message trashed", Toast.LENGTH_SHORT).show()
                 dialogInterface.dismiss()
                 refreshListener.onRequestRefresh()
             }
         }
         alertDialogBuilder.setNegativeButton("Cancel") { dialogInterface: DialogInterface, _: Int ->
-            // Dismiss the dialog when "Cancel" button is clicked
             dialogInterface.dismiss()
         }
         val alertDialog = alertDialogBuilder.create()

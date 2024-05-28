@@ -43,7 +43,7 @@ class CreateMessageActivity : AppCompatActivity() {
         }
         val backButton: ImageView = findViewById(R.id.back_icon)
         backButton.setOnClickListener {
-            finish() // This will close the current activity and return to the previous one
+            finish()
         }
         userRecyclerView.adapter = userAdapter
 
@@ -59,7 +59,6 @@ class CreateMessageActivity : AppCompatActivity() {
                     filterUsers(s.toString())
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {}
         })
     }
@@ -94,7 +93,7 @@ class CreateMessageActivity : AppCompatActivity() {
     }
 
     private fun startChatWithUser(user: new_User, myId: String) {
-        val currentUserID = myId // Replace with actual user ID
+        val currentUserID = myId
         val otherUserID = user.userID
 
         db.collection("Chats")
@@ -103,7 +102,6 @@ class CreateMessageActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { documents ->
                 if (!documents.isEmpty) {
-                    // Chat already exists, retrieve chatID and start ChatActivity
                     val chatID = documents.documents[0].id
                     val intent = Intent(this, ChatActivity::class.java)
                     intent.putExtra("chatID", chatID)
@@ -115,28 +113,22 @@ class CreateMessageActivity : AppCompatActivity() {
                         .get()
                         .addOnSuccessListener { documents ->
                             if (!documents.isEmpty) {
-                                // Chat already exists, retrieve chatID and start ChatActivity
                                 val chatID = documents.documents[0].id
                                 val intent = Intent(this, ChatActivity::class.java)
-                                //Update if trashed
-//                                db.collection("Chats").document(documents.documents[0].id).update("is_trashed" , true)
                                 intent.putExtra("chatID", chatID)
                                 startActivity(intent)
                             } else {
                                 createNewChat(currentUserID, otherUserID)
                             }
                         }
-                    // Chat doesn't exist, create a new one
                 }
             }
             .addOnFailureListener { e ->
                 Log.e("CreateMessageActivity", "Error checking chat existence", e)
-                // Handle error
             }
     }
 
     private fun createNewChat(currentUserID: String, otherUserID: String) {
-        // Create a new chat document in Firestore
         val chatData = hashMapOf(
             "person_1" to currentUserID,
             "person_2" to otherUserID,
@@ -147,15 +139,12 @@ class CreateMessageActivity : AppCompatActivity() {
         db.collection("Chats")
             .add(chatData)
             .addOnSuccessListener { documentReference ->
-                // Chat document created successfully, start ChatActivity with the new chat ID
                 val intent = Intent(this, ChatActivity::class.java)
                 intent.putExtra("chatID", documentReference.id)
                 startActivity(intent)
             }
             .addOnFailureListener { e ->
                 Log.e("CreateMessageActivity", "Error creating new chat", e)
-                // Handle error
             }
     }
-
 }

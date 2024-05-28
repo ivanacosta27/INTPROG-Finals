@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.adapters.ChatAdapter
-import com.mab.buwisbuddyph.dataclass.new_Message
 import com.mab.buwisbuddyph.dataclass.ChatMessage
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -27,7 +25,6 @@ class ChatActivity : AppCompatActivity() {
     private val chatMessages = mutableListOf<ChatMessage>()
     private lateinit var editText: EditText
     private lateinit var other_id: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +56,6 @@ class ChatActivity : AppCompatActivity() {
                 if (chatDocs.get("person_1") == auth.uid) {
                     chatDocs.getString("person_2")?.let {
                         db.collection("users").document(it).get().addOnSuccessListener { userDocu ->
-//                        avatar.setImageDrawable("/${}userDocu.getString("userProfileImage") ?: "")
                             name.text = userDocu.getString("userFullName") ?: ""
                             other_id = userDocu.getString("userID").toString()
                         }
@@ -67,7 +63,6 @@ class ChatActivity : AppCompatActivity() {
                 } else {
                     chatDocs.getString("person_1")?.let {
                         db.collection("users").document(it).get().addOnSuccessListener { userDocu ->
-//                        avatar.setImageDrawable("/${}userDocu.getString("userProfileImage") ?: "")
                             name.text = userDocu.getString("userFullName") ?: ""
                             other_id = userDocu.getString("userID").toString()
                         }
@@ -91,74 +86,58 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun checkForArchivedText(chatID: String) {
-        // Query the "archives" collection to check for archived text
         db.collection("archives")
             .whereEqualTo("my_id", auth.currentUser?.uid)
             .whereEqualTo("chat_id", chatID)
             .get()
             .addOnSuccessListener { documents ->
                 if (!documents.isEmpty) {
-                    // Found archived text, pre-write it into the EditText
                     val archivedText = documents.documents[0].getString("text_left") ?: ""
                     editText.setText(archivedText)
                 }
             }
             .addOnFailureListener { e ->
-                // Handle any errors
-                // For now, let's just log the error
-                Log.e("YourActivity", "Error checking for archived text", e)
+                Log.e("ChatActivity", "Error checking for archived text", e)
             }
     }
 
     override fun onBackPressed() {
-        // Check if the EditText is not blank
         val textLeft = editText.text.toString().trim()
         saveToArchives(textLeft)
         super.onBackPressed()
     }
 
     private fun saveToArchives(textLeft: String) {
-        // Create a new document in the "archives" collection
-
         if (textLeft == "") {
             val archivesRef = db.collection("archives").document(other_id)
             archivesRef.delete()
         } else {
             val archivesRef = db.collection("archives").document(other_id)
-            // Define the data to be saved
             val data = hashMapOf(
                 "my_id" to auth.currentUser?.uid,
                 "text_left" to textLeft,
-                "chat_id" to intent.getStringExtra("chatID") // Assuming you pass chatID via Intent
+                "chat_id" to intent.getStringExtra("chatID")
             )
-
-            // Save the data to Firestore
             archivesRef.set(data)
                 .addOnSuccessListener {
-                    // Document saved successfully
-                    super.onBackPressed() // Proceed with the default back behavior
+                    super.onBackPressed()
                 }
                 .addOnFailureListener { e ->
-                    // Handle any errors
-                    // You can choose to show a toast or log the error
-                    // For now, let's just log the error
-                    Log.e("YourActivity", "Error saving to archives", e)
+                    Log.e("ChatActivity", "Error saving to archives", e)
                 }
         }
     }
-
 
     private fun sendMessage(message: String, chatID: String) {
         val timestamp = System.currentTimeMillis()
         val chatMessage = FirebaseAuth.getInstance().uid?.let {
             ChatMessage(
-                senderId = it, // Replace with actual user ID
+                senderId = it,
                 message = message,
                 timestamp = timestamp
             )
         }
 
-        // Update last_message field in the main document
         val chatRef = db.collection("Chats").document(chatID)
         chatRef.update("last_message", message, "is_trashed", false)
             .addOnSuccessListener {
@@ -168,7 +147,6 @@ class ChatActivity : AppCompatActivity() {
                 Log.w("ChatActivity", "Error updating last message", e)
             }
 
-        // Add message to the Messages subcollection
         if (chatMessage != null) {
             chatRef.collection("Messages")
                 .add(chatMessage)
@@ -180,7 +158,6 @@ class ChatActivity : AppCompatActivity() {
                 }
         }
     }
-
 
     private fun loadMessages(chatID: String?) {
         if (chatID != null) {

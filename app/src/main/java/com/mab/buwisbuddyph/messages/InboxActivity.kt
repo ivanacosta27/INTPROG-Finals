@@ -29,7 +29,7 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
         recyclerView = findViewById(R.id.recyclerView)
         val backButton: ImageView = findViewById(R.id.back_icon)
         backButton.setOnClickListener {
-            finish() // This will close the current activity and return to the previous one
+            finish()
         }
         recyclerView.layoutManager = LinearLayoutManager(this)
         messageAdapter = MessageListAdapter(messages, this)
@@ -38,7 +38,7 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
 
     override fun onResume() {
         super.onResume()
-        fetchInboxMessages() // Refresh messages when the activity is resumed
+        fetchInboxMessages()
     }
 
     override fun onRequestRefresh() {
@@ -48,7 +48,6 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
     private fun fetchInboxMessages() {
         val currentUserID = auth.currentUser?.uid ?: return
 
-        // Fetch messages where the user is involved and is_trash is false
         db.collection("Chats")
             .whereEqualTo("person_1", currentUserID)
             .whereEqualTo("is_trashed", false)
@@ -56,15 +55,18 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
             .addOnSuccessListener { chatDocuments ->
                 messages.clear()
                 for (document in chatDocuments) {
-                    document.getString("person_2")?.let { db.collection("users").document(it).get().addOnSuccessListener { userDocu ->
-                        val avatarImage = userDocu.getString("userProfileImage") ?: ""
-                        val fullName = userDocu.getString("userFullName") ?: ""
-                        val lastMessage = document.getString("last_message") ?: ""
-                        val chatId = document.id
-                        val newMessage = new_Message(avatarImage,fullName, lastMessage, chatId)
-                        messages.add(newMessage)
-                        messageAdapter.notifyDataSetChanged()
-                    } }
+                    val person2ID = document.getString("person_2")
+                    if (person2ID != null && person2ID.isNotEmpty()) {
+                        db.collection("users").document(person2ID).get().addOnSuccessListener { userDocu ->
+                            val avatarImage = userDocu.getString("userProfileImage") ?: ""
+                            val fullName = userDocu.getString("userFullName") ?: ""
+                            val lastMessage = document.getString("last_message") ?: ""
+                            val chatId = document.id
+                            val newMessage = new_Message(avatarImage, fullName, lastMessage, chatId)
+                            messages.add(newMessage)
+                            messageAdapter.notifyDataSetChanged()
+                        }
+                    }
                 }
                 messageAdapter.notifyDataSetChanged()
             }
@@ -72,7 +74,6 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
                 // Handle error
             }
 
-        // Fetch messages where the user is involved and is_trash is false
         db.collection("Chats")
             .whereEqualTo("person_2", currentUserID)
             .whereEqualTo("is_trashed", false)
@@ -80,15 +81,18 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
             .addOnSuccessListener { chatDocuments ->
                 messages.clear()
                 for (document in chatDocuments) {
-                    document.getString("person_1")?.let { db.collection("users").document(it).get().addOnSuccessListener { userDocu ->
-                        val avatarImage = userDocu.getString("userProfileImage") ?: ""
-                        val fullName = userDocu.getString("userFullName") ?: ""
-                        val lastMessage = document.getString("last_message") ?: ""
-                        val chatId = document.id
-                        val newMessage = new_Message(avatarImage,fullName, lastMessage, chatId)
-                        messages.add(newMessage)
-                        messageAdapter.notifyDataSetChanged()
-                    } }
+                    val person1ID = document.getString("person_1")
+                    if (person1ID != null && person1ID.isNotEmpty()) {
+                        db.collection("users").document(person1ID).get().addOnSuccessListener { userDocu ->
+                            val avatarImage = userDocu.getString("userProfileImage") ?: ""
+                            val fullName = userDocu.getString("userFullName") ?: ""
+                            val lastMessage = document.getString("last_message") ?: ""
+                            val chatId = document.id
+                            val newMessage = new_Message(avatarImage, fullName, lastMessage, chatId)
+                            messages.add(newMessage)
+                            messageAdapter.notifyDataSetChanged()
+                        }
+                    }
                 }
                 messageAdapter.notifyDataSetChanged()
             }

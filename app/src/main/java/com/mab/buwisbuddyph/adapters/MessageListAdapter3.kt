@@ -1,17 +1,12 @@
 package com.mab.buwisbuddyph.adapters
 
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.dataclass.new_Message
 import com.mab.buwisbuddyph.messages.ChatActivity
@@ -44,7 +39,6 @@ class MessageListAdapter3(private val messages: List<new_Message>) : RecyclerVie
             intent.putExtra("chatID", message.chatId)
             context.startActivity(intent)
         }
-
 
         // Set profile image (you need to load the image here if you have a URL or resource ID)
         // holder.profileImage.setImageDrawable(...)
