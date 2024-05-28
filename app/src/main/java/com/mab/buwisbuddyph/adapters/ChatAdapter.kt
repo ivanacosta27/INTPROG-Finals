@@ -50,6 +50,3 @@ class ChatAdapter(private val chatMessages: List<ChatMessage>) :
     override fun getItemCount() = chatMessages.size
 }
 
-class ChatAdapter {
-
-}

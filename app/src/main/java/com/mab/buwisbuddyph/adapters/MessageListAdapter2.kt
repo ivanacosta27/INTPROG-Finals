@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
-import com.mab.buwisbuddyph.activities.ChatActivity // Correct import statement
+import com.mab.buwisbuddyph.messages.ChatActivity
 import com.mab.buwisbuddyph.dataclass.new_Message
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -62,7 +62,7 @@ class MessageListAdapter2(private val messages: List<new_Message>, private val r
 
     override fun getItemCount() = messages.size
 
-    private fun showDeleteConfirmationDialog(context: Context, new_Message: new_Message) {
+    private fun showDeleteConfirmationDialog(context: Context, message: new_Message) {
         val updateData = hashMapOf<String, Any>(
             "is_trashed" to false
         )
@@ -70,7 +70,7 @@ class MessageListAdapter2(private val messages: List<new_Message>, private val r
         alertDialogBuilder.setTitle("Retrieve Message")
         alertDialogBuilder.setMessage("Are you sure you want to retrieve this message?")
         alertDialogBuilder.setPositiveButton("Retrieve") { dialogInterface: DialogInterface, _: Int ->
-            FirebaseFirestore.getInstance().collection("Chats").document(new_Message.chatId).update(updateData)
+            FirebaseFirestore.getInstance().collection("Chats").document(message.chatId).update(updateData)
                 .addOnSuccessListener {
                     Toast.makeText(context, "Message retrieved", Toast.LENGTH_SHORT).show()
                     dialogInterface.dismiss()
