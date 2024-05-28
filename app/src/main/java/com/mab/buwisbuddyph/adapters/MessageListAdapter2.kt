@@ -11,10 +11,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
+import com.mab.buwisbuddyph.activities.ChatActivity // Correct import statement
 import com.mab.buwisbuddyph.dataclass.new_Message
-import com.mab.buwisbuddyph.messages.ChatActivity
 import de.hdodenhof.circleimageview.CircleImageView
 
 class MessageListAdapter2(private val messages: List<new_Message>, private val refreshListener: OnRefreshListener) : RecyclerView.Adapter<MessageListAdapter2.MessageViewHolder>() {
@@ -53,13 +54,15 @@ class MessageListAdapter2(private val messages: List<new_Message>, private val r
             true // Return true to consume the long click event
         }
 
-        // Set profile image (you need to load the image here if you have a URL or resource ID)
-        // holder.profileImage.setImageDrawable(...)
+        // Load profile image with Glide
+        Glide.with(holder.itemView.context)
+            .load(if (message.avatarUrl.isEmpty()) R.drawable.default_profile_img else message.avatarUrl)
+            .into(holder.profileImage)
     }
 
     override fun getItemCount() = messages.size
 
-    private fun showDeleteConfirmationDialog(context: Context, message: new_Message) {
+    private fun showDeleteConfirmationDialog(context: Context, new_Message: new_Message) {
         val updateData = hashMapOf<String, Any>(
             "is_trashed" to false
         )
@@ -67,7 +70,7 @@ class MessageListAdapter2(private val messages: List<new_Message>, private val r
         alertDialogBuilder.setTitle("Retrieve Message")
         alertDialogBuilder.setMessage("Are you sure you want to retrieve this message?")
         alertDialogBuilder.setPositiveButton("Retrieve") { dialogInterface: DialogInterface, _: Int ->
-            FirebaseFirestore.getInstance().collection("Chats").document(message.chatId).update(updateData)
+            FirebaseFirestore.getInstance().collection("Chats").document(new_Message.chatId).update(updateData)
                 .addOnSuccessListener {
                     Toast.makeText(context, "Message retrieved", Toast.LENGTH_SHORT).show()
                     dialogInterface.dismiss()

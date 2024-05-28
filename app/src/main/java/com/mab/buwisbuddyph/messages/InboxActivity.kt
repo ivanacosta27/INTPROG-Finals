@@ -5,6 +5,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
@@ -65,6 +66,11 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
                             val newMessage = new_Message(avatarImage, fullName, lastMessage, chatId)
                             messages.add(newMessage)
                             messageAdapter.notifyDataSetChanged()
+
+                            // Load profile image with Glide
+                            Glide.with(this)
+                                .load(if (avatarImage.isEmpty()) R.drawable.default_profile_img else avatarImage)
+                                .into(holder.profileImage)
                         }
                     }
                 }
@@ -91,6 +97,11 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
                             val newMessage = new_Message(avatarImage, fullName, lastMessage, chatId)
                             messages.add(newMessage)
                             messageAdapter.notifyDataSetChanged()
+
+                            // Load profile image with Glide
+                            Glide.with(this)
+                                .load(if (avatarImage.isEmpty()) R.drawable.default_profile_img else avatarImage)
+                                .into(holder.profileImage)
                         }
                     }
                 }

@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph.messages
+package com.mab.buwisbuddyph.activities
 
 import android.os.Bundle
 import android.util.Log
