@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.dataclass.new_Message
@@ -55,6 +56,10 @@ class MessageListAdapter(private val messages: List<new_Message>, private val re
 
         // Set profile image (you need to load the image here if you have a URL or resource ID)
         // holder.profileImage.setImageDrawable(...)
+        // Load profile image with Glide
+        Glide.with(holder.itemView.context)
+            .load(if (message.avatarUrl.isEmpty()) R.drawable.default_profile_img else message.avatarUrl)
+            .into(holder.profileImage)
     }
 
     override fun getItemCount() = messages.size

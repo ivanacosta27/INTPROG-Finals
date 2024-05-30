@@ -21,7 +21,7 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.new_fragment_inbox)
+        setContentView(R.layout.new_fragment_trash)
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
@@ -36,12 +36,13 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
         recyclerView.adapter = messageAdapter
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onRequestRefresh() {
         fetchInboxMessages()
     }
 
-    override fun onRequestRefresh() {
+    override fun onResume() {
+        super.onResume()
+        messages.clear()
         fetchInboxMessages()
     }
 
@@ -55,9 +56,8 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
             .addOnSuccessListener { chatDocuments ->
                 messages.clear()
                 for (document in chatDocuments) {
-                    val person2ID = document.getString("person_2")
-                    if (person2ID != null && person2ID.isNotEmpty()) {
-                        db.collection("users").document(person2ID).get().addOnSuccessListener { userDocu ->
+                    document.getString("person_2")?.let {
+                        db.collection("users").document(it).get().addOnSuccessListener { userDocu ->
                             val avatarImage = userDocu.getString("userProfileImage") ?: ""
                             val fullName = userDocu.getString("userFullName") ?: ""
                             val lastMessage = document.getString("last_message") ?: ""
@@ -73,7 +73,6 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
             .addOnFailureListener { e ->
                 // Handle error
             }
-
         db.collection("Chats")
             .whereEqualTo("person_2", currentUserID)
             .whereEqualTo("is_trashed", false)
@@ -81,9 +80,8 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
             .addOnSuccessListener { chatDocuments ->
                 messages.clear()
                 for (document in chatDocuments) {
-                    val person1ID = document.getString("person_1")
-                    if (person1ID != null && person1ID.isNotEmpty()) {
-                        db.collection("users").document(person1ID).get().addOnSuccessListener { userDocu ->
+                    document.getString("person_1")?.let {
+                        db.collection("users").document(it).get().addOnSuccessListener { userDocu ->
                             val avatarImage = userDocu.getString("userProfileImage") ?: ""
                             val fullName = userDocu.getString("userFullName") ?: ""
                             val lastMessage = document.getString("last_message") ?: ""

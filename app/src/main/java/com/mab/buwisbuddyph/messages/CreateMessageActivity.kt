@@ -134,7 +134,8 @@ class CreateMessageActivity : AppCompatActivity() {
             "person_2" to otherUserID,
             "is_trashed" to false,
             "is_read_person_1" to true,
-            "is_read_person_2" to false
+            "is_read_person_2" to false,
+            "last_message" to ""
         )
         db.collection("Chats")
             .add(chatData)
