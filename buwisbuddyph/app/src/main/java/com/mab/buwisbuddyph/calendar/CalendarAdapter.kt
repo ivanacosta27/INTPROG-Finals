@@ -28,13 +28,14 @@ class CalendarAdapter(
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         val date = days[position]
-        holder.dayOfMonth.text = date?.dayOfMonth.toString() ?: ""
+        holder.dayOfMonth.text = date?.dayOfMonth?.toString() ?: "" // Display day of month if not null, otherwise empty string
         if (date == CalendarUtils.selectedDate) {
             holder.parentView.setBackgroundColor(Color.LTGRAY)
         } else {
             holder.parentView.setBackgroundColor(Color.TRANSPARENT) // Reset background color if not selected
         }
     }
+
 
     override fun getItemCount(): Int {
         return days.size

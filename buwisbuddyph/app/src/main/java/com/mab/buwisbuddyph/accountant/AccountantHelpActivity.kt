@@ -6,7 +6,7 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -27,7 +27,7 @@ class AccountantHelpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_accountant_help)
 
         recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Initialize AccountantAdapter with onItemClick listener
         accountantAdapter = AccountantAdapter(userList) { userID->

@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,7 +46,7 @@ class PostActivity : AppCompatActivity() {
         commentListRV.adapter = commentListAdapter
 
         val returnIcon = findViewById<ImageView>(R.id.returnIcon)
-        returnIcon.setOnClickListener{
+        returnIcon.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 
@@ -63,30 +64,46 @@ class PostActivity : AppCompatActivity() {
         commentButton.setOnClickListener {
             val commentText = commentEditText.text.toString()
             if (commentText.isNotEmpty()) {
-                val comment = Comment(
-                    commentID = "",
-                    commentUserID = FirebaseAuth.getInstance().currentUser?.uid ?: "",
-                    commentUserComment = commentText,
-                    commentTimestamp = Timestamp.now()
-                )
+                val currentUserID = FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener
 
-                if (postId != null) {
-                    db.collection("posts").document(postId).collection("comments").add(comment)
-                        .addOnSuccessListener { documentReference ->
-                            documentReference.update("commentID", documentReference.id)
-                                .addOnSuccessListener {
-                                    println("Comment successfully written!")
-                                }
-                                .addOnFailureListener { e ->
-                                    Log.e("PostActivity", "Error updating comment ID", e)
-                                }
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e("PostActivity", "Error writing comment: $e")
-                        }
-                }
+                db.collection("users").document(currentUserID).get()
+                    .addOnSuccessListener { userDocument ->
+                        if (userDocument.exists()) {
+                            val userFullName = userDocument.getString("userFullName")
+                            val userProfileImage = userDocument.getString("userProfileImage")
 
-                commentEditText.text.clear()
+                            val comment = Comment(
+                                commentID = "",
+                                commentUserID = currentUserID,
+                                commentUserComment = commentText,
+                                commentTimestamp = Timestamp.now(),
+                                commentUserProfileImage = userProfileImage,
+                                commentUserFullName = userFullName
+                            )
+
+                            if (postId != null) {
+                                db.collection("posts").document(postId).collection("comments").add(comment)
+                                    .addOnSuccessListener { documentReference ->
+                                        documentReference.update("commentID", documentReference.id)
+                                            .addOnSuccessListener {
+                                                println("Comment successfully written!")
+                                                commentEditText.text.clear()
+                                                Toast.makeText(this, "Comment added", Toast.LENGTH_SHORT).show()
+                                            }
+                                            .addOnFailureListener { e ->
+                                                Log.e("PostActivity", "Error updating comment ID", e)
+                                                Toast.makeText(this, "Error adding comment", Toast.LENGTH_SHORT).show()
+                                            }
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("PostActivity", "Error writing comment: $e")
+                                        Toast.makeText(this, "Error adding comment", Toast.LENGTH_SHORT).show()
+                                    }
+                            }
+                        }
+                    }
+            } else {
+                Toast.makeText(this, "Comment cannot be empty", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -117,5 +134,4 @@ class PostActivity : AppCompatActivity() {
                 Log.e("PostActivity", "Error getting post", exception)
             }
     }
-
 }

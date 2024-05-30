@@ -6,5 +6,7 @@ data class Comment(
     val commentID: String = "",
     val commentUserID: String = "",
     val commentUserComment: String = "",
-    val commentTimestamp: Timestamp? = null
+    val commentTimestamp: Timestamp? = null,
+    var commentUserFullName: String? = null,
+    var commentUserProfileImage: String? = null
 )

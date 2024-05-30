@@ -57,12 +57,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         calendarRecyclerView.adapter = calendarAdapter
     }
 
-
-
-
-
-
-
     fun previousMonthAction(view: View) {
         CalendarUtils.selectedDate = CalendarUtils.selectedDate!!.minusMonths(1)
         setMonthView()

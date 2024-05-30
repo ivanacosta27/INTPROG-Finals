@@ -14,6 +14,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -28,7 +29,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var userProfileImg: ImageView
     private lateinit var storageRef: StorageReference
     private var imageUri: Uri? = null
-    private var oldImageUri: Uri? = null // Variable to store the old image URI
+    private var oldImageUri: String? = null // Variable to store the old image URI
 
     companion object {
         private const val TAG = "ProfileActivity"
@@ -104,7 +105,7 @@ class ProfileActivity : AppCompatActivity() {
                     val profileImage = document.getString("userProfileImage") // Retrieve the old image URI from Firestore
 
                     // Store the old image URI if it exists
-                    oldImageUri = profileImage?.let { Uri.parse(it) }
+                    oldImageUri = profileImage
 
                     findViewById<EditText>(R.id.nameTV).setText(name)
                     findViewById<EditText>(R.id.numberTV).setText(number)
@@ -112,9 +113,12 @@ class ProfileActivity : AppCompatActivity() {
                     findViewById<EditText>(R.id.tinTV).setText(tin)
                     findViewById<EditText>(R.id.emailTV).setText(email)
 
-                    // Load the profile image
-                    // If profileImage is null, you can load a default image or leave it as is
-                    profileImage?.let { userProfileImg.setImageURI(oldImageUri) }
+                    // Load the profile image using Glide
+                    profileImage?.let {
+                        Glide.with(this)
+                            .load(it)
+                            .into(userProfileImg)
+                    }
                 } else {
                     Log.d(TAG, "No such document")
                 }
@@ -138,7 +142,7 @@ class ProfileActivity : AppCompatActivity() {
             val imageRef = storageRef.child("userProfileImages/${uid}_profile_image")
             val uploadTask = imageRef.putFile(newImageUri)
 
-            uploadTask            .continueWithTask { task ->
+            uploadTask.continueWithTask { task ->
                 if (!task.isSuccessful) {
                     task.exception?.let {
                         throw it
@@ -242,4 +246,3 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 }
-

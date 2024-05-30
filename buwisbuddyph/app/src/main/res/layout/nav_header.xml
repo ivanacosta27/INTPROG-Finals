@@ -17,7 +17,7 @@
         android:layout_marginRight="10dp"
         android:layout_weight="1"
         android:clickable="true"
-        android:focusable="true"/>
+        android:focusable="true" />
 
     <TextView
         android:id="@+id/user_name"

@@ -14,6 +14,9 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class CommentListAdapter(private val commentList: MutableList<Comment>) : RecyclerView.Adapter<CommentListAdapter.CommentViewHolder>() {
 
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val userCache = mutableMapOf<String, UserCache>()
+
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val userProfileImage: CircleImageView = itemView.findViewById(R.id.userProfileImage)
         val conversationTV: TextView = itemView.findViewById(R.id.conversationTV)
@@ -29,22 +32,32 @@ class CommentListAdapter(private val commentList: MutableList<Comment>) : Recycl
         val currentItem = commentList[position]
         holder.conversationTV.text = currentItem.commentUserComment
 
-        val db = FirebaseFirestore.getInstance()
-        db.collection("users").document(currentItem.commentUserID)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    val userFullName = document.getString("userFullName")
-                    holder.userFullName.text = userFullName
-                    val userProfileImageURL = document.getString("userProfileImageURL")
-                    Picasso.get().load(userProfileImageURL).into(holder.userProfileImage) // Load the image with Picasso
-                } else {
-                    Log.d("CommentListAdapter", "No such document")
+        val userID = currentItem.commentUserID
+
+        if (userCache.containsKey(userID)) {
+            val cachedUser = userCache[userID]
+            holder.userFullName.text = cachedUser?.fullName
+            Picasso.get().load(cachedUser?.profileImageUrl).placeholder(R.drawable.default_profile_img).into(holder.userProfileImage)
+        } else {
+            db.collection("users").document(userID)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val userFullName = document.getString("userFullName")
+                        val userProfileImageUrl = document.getString("userProfileImage")
+
+                        userCache[userID] = UserCache(userFullName, userProfileImageUrl)
+
+                        holder.userFullName.text = userFullName
+                        Picasso.get().load(userProfileImageUrl).placeholder(R.drawable.default_profile_img).into(holder.userProfileImage)
+                    } else {
+                        Log.d("CommentListAdapter", "No such document")
+                    }
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.e("CommentListAdapter", "Error getting document", exception)
-            }
+                .addOnFailureListener { exception ->
+                    Log.e("CommentListAdapter", "Error getting document", exception)
+                }
+        }
     }
 
     override fun getItemCount() = commentList.size
@@ -54,4 +67,6 @@ class CommentListAdapter(private val commentList: MutableList<Comment>) : Recycl
         commentList.addAll(newComments)
         notifyDataSetChanged()
     }
+
+    data class UserCache(val fullName: String?, val profileImageUrl: String?)
 }

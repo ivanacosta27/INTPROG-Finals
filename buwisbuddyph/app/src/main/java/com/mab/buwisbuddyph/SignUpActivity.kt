@@ -173,8 +173,6 @@ class SignUpActivity : AppCompatActivity() {
                 .set(user)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val intent = Intent(this, SignInActivity::class.java)
-                        startActivity(intent)
                         Log.d(TAG, "User created successfully.")
                     } else {
                         Log.w(TAG, "Error adding document", task.exception)

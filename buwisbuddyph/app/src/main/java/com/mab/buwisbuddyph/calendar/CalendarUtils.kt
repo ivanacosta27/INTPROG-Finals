@@ -34,7 +34,7 @@ object CalendarUtils {
 
         for (i in 1..42) {
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
-                daysInMonthArray.add(null)
+                daysInMonthArray.add(null) // Add null directly
             } else {
                 val dayOfMonth = i - dayOfWeek
                 val formattedDate = LocalDate.of(date.year, date.month, dayOfMonth)
@@ -43,6 +43,7 @@ object CalendarUtils {
         }
         return daysInMonthArray
     }
+
 
 
 
