@@ -75,7 +75,7 @@
 
     <string name="back"><![CDATA[<-]]></string>
     <string name="forward"><![CDATA[->]]></string>
-    <string name="enter_budget">ENTER BUDGET</string>
+    <string name="enter_budget">ENTER AMOUNT</string>
     <string name="enter">ENTER</string>
     <string name="remaining_budget">Remaining Budget</string>
     <string name="enter_expense">Enter Expense</string>
