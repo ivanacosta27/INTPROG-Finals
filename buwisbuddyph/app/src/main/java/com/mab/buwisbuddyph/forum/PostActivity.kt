@@ -15,7 +15,6 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
-import com.mab.buwisbuddyph.adapters.CommentListAdapter
 import com.mab.buwisbuddyph.dataclass.Comment
 import com.mab.buwisbuddyph.dataclass.Post
 import com.mab.buwisbuddyph.home.HomeActivity

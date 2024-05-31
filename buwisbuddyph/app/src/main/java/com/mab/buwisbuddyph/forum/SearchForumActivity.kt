@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
-import com.mab.buwisbuddyph.adapters.PostListAdapter
 import com.mab.buwisbuddyph.dataclass.Post
 import com.mab.buwisbuddyph.home.HomeActivity
 

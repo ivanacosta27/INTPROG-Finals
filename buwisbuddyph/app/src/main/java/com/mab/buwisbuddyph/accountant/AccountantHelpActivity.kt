@@ -6,12 +6,12 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.widget.SearchView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.mab.buwisbuddyph.R
-import com.mab.buwisbuddyph.adapters.AccountantAdapter
 import com.mab.buwisbuddyph.dataclass.User
 import com.mab.buwisbuddyph.home.HomeActivity
 
@@ -19,6 +19,7 @@ class AccountantHelpActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var accountantAdapter: AccountantAdapter
+    private lateinit var searchView: SearchView
     private val userList = mutableListOf<User>()
     private val db = FirebaseFirestore.getInstance()
 
@@ -27,21 +28,34 @@ class AccountantHelpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_accountant_help)
 
         recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        // Initialize AccountantAdapter with onItemClick listener
-        accountantAdapter = AccountantAdapter(userList) { userID->
+        accountantAdapter = AccountantAdapter(userList) { userID ->
             val intent = Intent(this, AccountantProfileActivity::class.java)
-            intent.putExtra("userID", userID) // Pass any necessary data to the activity
+            intent.putExtra("userID", userID)
             startActivity(intent)
         }
 
         recyclerView.adapter = accountantAdapter
 
+        searchView = findViewById(R.id.search_accountants)
+        searchView.isIconified = false
+        searchView.clearFocus()
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                accountantAdapter.filter.filter(newText)
+                return false
+            }
+        })
+
         fetchAccountants()
 
         val returnIcon = findViewById<ImageView>(R.id.returnIcon)
-        returnIcon.setOnClickListener{
+        returnIcon.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 

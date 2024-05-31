@@ -16,6 +16,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.mab.buwisbuddyph.LoadingDialog
 import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.home.HomeActivity
 import de.hdodenhof.circleimageview.CircleImageView
@@ -35,6 +36,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var spinner: Spinner
+    private lateinit var loadingDialog: LoadingDialog
 
     companion object {
         private const val TAG = "SignUpActivity"
@@ -46,6 +48,7 @@ class SignUpActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+        loadingDialog = LoadingDialog(this)
 
         userProfileImg = findViewById(R.id.userProfileImg)
         userFullNameET = findViewById(R.id.userFullNameET)
@@ -119,6 +122,8 @@ class SignUpActivity : AppCompatActivity() {
             return
         }
 
+        loadingDialog.loginLoadingDialog()
+
         auth.createUserWithEmailAndPassword(userEmail, userPassword)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -145,21 +150,26 @@ class SignUpActivity : AppCompatActivity() {
                                     storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
                                         userInformation["userProfileImage"] = downloadUri.toString()
                                         saveUserToFirestore(userInformation)
+                                        loadingDialog.dismissDialog()
+                                        navigateToHome()
                                     }
                                 }
                                 .addOnFailureListener { exception ->
                                     Log.e(TAG, "Error uploading image: ${exception.message}")
                                     saveUserToFirestore(userInformation)
+                                    loadingDialog.dismissDialog()
+                                    navigateToHome()
                                 }
                         } else {
                             saveUserToFirestore(userInformation)
+                            loadingDialog.dismissDialog()
+                            navigateToHome()
                         }
-                        val intent = Intent(this, HomeActivity::class.java)
-                        startActivity(intent)
                     }
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                    loadingDialog.dismissDialog()
                 }
             }
     }
@@ -202,5 +212,11 @@ class SignUpActivity : AppCompatActivity() {
             day
         )
         datePickerDialog.show()
+    }
+
+    private fun navigateToHome() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
