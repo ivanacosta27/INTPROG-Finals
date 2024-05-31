@@ -34,8 +34,6 @@ class ArchiveActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         messageAdapter = MessageListAdapter3(messages)
         recyclerView.adapter = messageAdapter
-
-//        fetchInboxMessages()
     }
 
     override fun onResume() {
@@ -47,7 +45,6 @@ class ArchiveActivity : AppCompatActivity() {
     private fun fetchInboxMessages() {
         val currentUserID = auth.currentUser?.uid ?: return
 
-        // Fetch messages where the user is involved and is_trash is false
         db.collection("archives")
             .whereEqualTo("my_id", currentUserID)
             .get()

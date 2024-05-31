@@ -1,6 +1,7 @@
 package com.mab.buwisbuddyph.dataclass
 
 import com.google.firebase.Timestamp
+import org.w3c.dom.Comment
 
 data class Post(
     val postTitle: String = "",

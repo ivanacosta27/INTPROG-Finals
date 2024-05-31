@@ -24,6 +24,7 @@ class ChatAdapter(private val chatMessages: List<ChatMessage>) :
             .inflate(R.layout.new_item_chat_message, parent, false)
         return ChatViewHolder(view)
     }
+
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         val message = chatMessages[position]
 
@@ -46,6 +47,6 @@ class ChatAdapter(private val chatMessages: List<ChatMessage>) :
         holder.chatBubbleLayout.layoutParams = layoutParams
     }
 
-
     override fun getItemCount() = chatMessages.size
 }
+

@@ -17,7 +17,6 @@ class UserAdapter(private val userList: List<new_User>, private val onItemClick:
 
         fun bind(user: new_User) {
             userFullNameTextView.text = user.userFullName
-//            Glide.with(itemView.context).load(user.userProfileImage).circleCrop().into(userImageView)
             itemView.setOnClickListener {
                 onItemClick(user)
             }
@@ -31,9 +30,6 @@ class UserAdapter(private val userList: List<new_User>, private val onItemClick:
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.bind(userList[position])
-        holder.itemView.setOnClickListener {
-            onItemClick(userList[position])
-        }
     }
 
     override fun getItemCount(): Int {

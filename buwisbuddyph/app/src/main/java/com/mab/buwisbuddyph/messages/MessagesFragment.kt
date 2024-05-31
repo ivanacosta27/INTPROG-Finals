@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mab.buwisbuddyph.R
-import com.mab.buwisbuddyph.messages.CreateMessageActivity
 
 class MessagesFragment : Fragment() {
 
@@ -33,16 +32,13 @@ class MessagesFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // Initialize views
         btnInbox = view.findViewById(R.id.btnInbox)
         btnTrash = view.findViewById(R.id.btnTrash)
         btnArchive = view.findViewById(R.id.btnArchive)
 
-        // Initialize badges
         btnInbox.text = "Inbox (${inboxBadge})"
         btnTrash.text = "Trash (${trashBadge})"
 
-        // Set up click listeners for menu buttons
         view.findViewById<View>(R.id.btnNewMessage).setOnClickListener {
             val intent = Intent(requireContext(), CreateMessageActivity::class.java)
             startActivity(intent)
@@ -65,9 +61,6 @@ class MessagesFragment : Fragment() {
             startActivity(intent)
         }
 
-        // Fetch and update badge counts
-//        updateBadgeCounts()
-
         return view
     }
 
@@ -83,7 +76,6 @@ class MessagesFragment : Fragment() {
         var unreadInInbox = 0
         var unreadInTrash = 0
 
-        // First Firestore query for person_1
         db.collection("Chats")
             .whereEqualTo("person_1", currentUserID)
             .get()
@@ -98,7 +90,6 @@ class MessagesFragment : Fragment() {
                     }
                 }
 
-                // Second Firestore query for person_2
                 db.collection("Chats")
                     .whereEqualTo("person_2", currentUserID)
                     .get()
@@ -113,7 +104,6 @@ class MessagesFragment : Fragment() {
                             }
                         }
 
-                        // Update the button text after the first query is complete
                         btnInbox.text = "Inbox ($unreadInInbox)"
                         btnTrash.text = "Trash ($unreadInTrash)"
                     }
@@ -122,5 +112,4 @@ class MessagesFragment : Fragment() {
                 // Handle error
             }
     }
-
 }

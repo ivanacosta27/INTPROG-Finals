@@ -1,5 +1,6 @@
 package com.mab.buwisbuddyph.home
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
@@ -20,6 +21,9 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
+import com.google.android.gms.wallet.*
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.wallet.AutoResolveHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -40,6 +44,7 @@ import com.mab.buwisbuddyph.accountant.AccountantHelpActivity
 import com.mab.buwisbuddyph.calendar.CalendarFragment
 import com.mab.buwisbuddyph.forum.ForumFragment
 import com.mab.buwisbuddyph.messages.MessagesFragment
+import com.mab.buwisbuddyph.util.GooglePayUtil
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.UUID
@@ -49,6 +54,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
     private lateinit var storageRef: StorageReference
+
+    companion object {
+        private const val LOAD_PAYMENT_DATA_REQUEST_CODE = 991
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,9 +74,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
         updateProfileInfo()
-
 
         val userProfileImage = findViewById<ImageView>(R.id.userProfileImage)
         userProfileImage.setOnClickListener {
@@ -90,7 +97,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         homeIcon.setOnClickListener {
             toHome()
         }
-
 
         val messageIcon = findViewById<ImageView>(R.id.messagesIcon)
         messageIcon.setOnClickListener {
@@ -292,16 +298,22 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val intent = Intent(this, AccountantHelpActivity::class.java)
                 startActivity(intent)
             }
-            R.id.nav_tax_calculator -> {
-                val intent = Intent(this, TaxCalculatorActivity::class.java)
-                startActivity(intent)
-            }
-            R.id.nav_document_list -> {
-                val intent = Intent(this, DocumentListActivity::class.java)
-                startActivity(intent)
-            }
+//            R.id.nav_tax_calculator -> {
+//                val intent = Intent(this, TaxCalculatorActivity::class.java)
+//                startActivity(intent)
+//            }
+//            R.id.nav_document_list -> {
+//                val intent = Intent(this, DocumentListActivity::class.java)
+//                startActivity(intent)
+//            }
             R.id.nav_purchase -> {
-                // Handle purchase navigation
+                GooglePayUtil.isReadyToPay(this) { isReady ->
+                    if (isReady) {
+                        GooglePayUtil.requestPayment(this, "10.00", LOAD_PAYMENT_DATA_REQUEST_CODE)
+                    } else {
+                        Log.e("HomeActivity", "Google Pay is not available")
+                    }
+                }
             }
             R.id.nav_guides -> {
                 val intent = Intent(this, GuideActivity::class.java)
@@ -316,6 +328,32 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            LOAD_PAYMENT_DATA_REQUEST_CODE -> {
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+                        data?.let {
+                            val paymentData = PaymentData.getFromIntent(data)
+                            val paymentInfo = paymentData?.toJson()
+
+                            // Handle the payment success
+                            Log.d("HomeActivity", "Payment Success: $paymentInfo")
+                        }
+                    }
+                    Activity.RESULT_CANCELED -> {
+                        Log.d("HomeActivity", "Payment Canceled")
+                    }
+                    AutoResolveHelper.RESULT_ERROR -> {
+                        val status = AutoResolveHelper.getStatusFromIntent(data)
+                        Log.e("HomeActivity", "Payment Failed: ${status?.statusMessage}")
+                    }
+                }
+            }
+        }
     }
 
     private fun showLogoutConfirmationDialog() {

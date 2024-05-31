@@ -1,6 +1,8 @@
 package com.mab.buwisbuddyph
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -18,6 +20,7 @@ import com.mab.buwisbuddyph.home.HomeActivity
 class SignInActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,9 @@ class SignInActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+
+        sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+
 
         val loginButton = findViewById<Button>(R.id.loginButton)
         loginButton.setOnClickListener { view ->
@@ -66,6 +72,17 @@ class SignInActivity : AppCompatActivity() {
                         .addOnSuccessListener { documents ->
                             loadingDialog.dismissDialog()
                             if (!documents.isEmpty) {
+                                val userFullName = documents.first().getString("userFullName") ?: ""
+                                val userProfileImage = documents.first().getString("userProfileImage") ?: ""
+
+                                // Save data to SharedPreferences
+                                val editor = sharedPreferences.edit()
+                                editor.putString("userId", documents.first().id)
+                                editor.putString("userFullName", userFullName)
+                                editor.putString("userProfileImage", userProfileImage)
+                                editor.apply()
+
+
                                 val intent = Intent(this, HomeActivity::class.java)
                                 startActivity(intent)
                             } else {

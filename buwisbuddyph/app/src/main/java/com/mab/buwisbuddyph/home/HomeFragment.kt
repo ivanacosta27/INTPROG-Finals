@@ -47,8 +47,8 @@ class HomeFragment : Fragment() {
         loadBudget()
 
         createNewBudget.setOnClickListener {
-             val intent = Intent(requireContext(), BudgetActivity::class.java)
-             startActivity(intent)
+            val intent = Intent(requireContext(), BudgetActivity::class.java)
+            startActivity(intent)
         }
 
         enterExpenseButton.setOnClickListener {

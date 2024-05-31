@@ -29,13 +29,11 @@ class TrashActivity : AppCompatActivity(), MessageListAdapter2.OnRefreshListener
         recyclerView = findViewById(R.id.recyclerView)
         val backButton: ImageView = findViewById(R.id.back_icon)
         backButton.setOnClickListener {
-            finish() // This will close the current activity and return to the previous one
+            finish()
         }
         recyclerView.layoutManager = LinearLayoutManager(this)
         messageAdapter = MessageListAdapter2(messages, this)
         recyclerView.adapter = messageAdapter
-
-//        fetchInboxMessages()
     }
 
     override fun onRequestRefresh() {
@@ -45,13 +43,12 @@ class TrashActivity : AppCompatActivity(), MessageListAdapter2.OnRefreshListener
     override fun onResume() {
         super.onResume()
         messages.clear()
-        fetchInboxMessages() // Refresh messages when the activity is resumed
+        fetchInboxMessages()
     }
 
     private fun fetchInboxMessages() {
         val currentUserID = auth.currentUser?.uid ?: return
 
-        // Fetch messages where the user is involved and is_trash is false
         db.collection("Chats")
             .whereEqualTo("person_1", currentUserID)
             .whereEqualTo("is_trashed", true)

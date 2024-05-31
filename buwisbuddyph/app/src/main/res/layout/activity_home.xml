@@ -5,7 +5,8 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.HomeActivity">
+    tools:context=".home.HomeActivity"
+    android:background="@drawable/img_bg2">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -32,7 +33,7 @@
             android:src="@drawable/hamburger_icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="7dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@color/home_color"
