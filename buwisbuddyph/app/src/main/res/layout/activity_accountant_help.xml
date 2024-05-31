@@ -64,8 +64,8 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:layout_below="@id/search_accountants"
         tools:listitem="@layout/accountants_list_item" />
 </RelativeLayout>

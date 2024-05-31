@@ -30,7 +30,6 @@ class ChatAdapter(private val chatMessages: List<ChatMessage>) :
 
         holder.messageText.text = message.message
 
-        // Set alignment of the chat bubble based on sender/receiver
         val layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT

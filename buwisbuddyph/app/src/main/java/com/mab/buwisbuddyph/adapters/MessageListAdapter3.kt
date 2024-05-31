@@ -29,19 +29,14 @@ class MessageListAdapter3(private val messages: List<new_Message>) : RecyclerVie
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages[position]
 
-        // Set data to views
         holder.userFullName.text = message.fullName
         holder.lastMessage.text = message.last_chat
         holder.layout.setOnClickListener {
-            // Open ChatActivity and pass chatId as an argument
             val context = holder.itemView.context
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("chatID", message.chatId)
             context.startActivity(intent)
         }
-
-        // Set profile image (you need to load the image here if you have a URL or resource ID)
-        // holder.profileImage.setImageDrawable(...)
     }
 
     override fun getItemCount() = messages.size

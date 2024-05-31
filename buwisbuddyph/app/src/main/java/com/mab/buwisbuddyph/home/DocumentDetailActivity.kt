@@ -14,13 +14,10 @@ class DocumentDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_document_detail)
-
         val documentImageView = findViewById<ImageView>(R.id.documentImageView)
-
-        // val documentId = intent.getStringExtra("documentId") ?: ""
         val documentImgLink = intent.getStringExtra("documentImgLink") ?: ""
-
         val returnIcon = findViewById<ImageView>(R.id.returnIcon)
+
         returnIcon.setOnClickListener{
             onBackPressedDispatcher.onBackPressed()
         }

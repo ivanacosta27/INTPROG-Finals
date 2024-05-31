@@ -47,7 +47,6 @@ class AccountantProfileActivity : AppCompatActivity() {
                 }
         }
 
-        // Fetch reviews for the selected accountant
         if (accountantId.isNotEmpty()) {
             fetchReviews(accountantId)
         }

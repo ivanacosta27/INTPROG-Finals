@@ -28,14 +28,8 @@ class NewMessageAdapter(private val context: Context, private val messages: List
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages[position]
-
-        // Set avatar image using Picasso library (replace with your method)
         Picasso.get().load(message.avatarUrl).into(holder.circleImageView)
-
-        // Set full name
         holder.fullNameTextView.text = message.fullName
-
-        // Set last chat message
         holder.lastChatTextView.text = message.last_chat
     }
 

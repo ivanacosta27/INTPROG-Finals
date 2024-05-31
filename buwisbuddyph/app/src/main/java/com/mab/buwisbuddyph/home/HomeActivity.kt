@@ -257,7 +257,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val inputStream: InputStream? = contentResolver.openInputStream(pdfUri)
             val contentValues = ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, "scanned_document.pdf")
-                // Adjust MIME type if needed
                 put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     put(MediaStore.MediaColumns.RELATIVE_PATH, "Documents/Scanned Documents")
@@ -339,7 +338,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             val paymentData = PaymentData.getFromIntent(data)
                             val paymentInfo = paymentData?.toJson()
 
-                            // Handle the payment success
                             Log.d("HomeActivity", "Payment Success: $paymentInfo")
                         }
                     }

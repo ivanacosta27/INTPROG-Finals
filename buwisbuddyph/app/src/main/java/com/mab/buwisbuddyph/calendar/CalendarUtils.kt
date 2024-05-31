@@ -44,11 +44,6 @@ object CalendarUtils {
         return daysInMonthArray
     }
 
-
-
-
-
-
     fun daysInWeekArray(selectedDate: LocalDate): ArrayList<LocalDate> {
         val days = ArrayList<LocalDate>()
         var current = sundayForDate(selectedDate)

@@ -39,11 +39,9 @@ class MessageListAdapter2(private val messages: List<new_Message>, private val r
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages[position]
 
-        // Set data to views
         holder.userFullName.text = message.fullName
         holder.lastMessage.text = message.last_chat
         holder.layout.setOnClickListener {
-            // Open ChatActivity and pass chatId as an argument
             val context = holder.itemView.context
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("chatID", message.chatId)
@@ -54,7 +52,6 @@ class MessageListAdapter2(private val messages: List<new_Message>, private val r
             true // Return true to consume the long click event
         }
 
-        // Load profile image with Glide
         Glide.with(holder.itemView.context)
             .load(if (message.avatarUrl.isEmpty()) R.drawable.default_profile_img else message.avatarUrl)
             .into(holder.profileImage)

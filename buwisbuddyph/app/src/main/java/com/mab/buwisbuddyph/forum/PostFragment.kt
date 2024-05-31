@@ -22,7 +22,6 @@ class PostFragment : Fragment() {
     private lateinit var postDescEditText: EditText
     private lateinit var postContentEditText: EditText
     private lateinit var postButton: Button
-
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
@@ -43,13 +42,10 @@ class PostFragment : Fragment() {
         postButton.setOnClickListener {
             savePost()
         }
-
-
         val returnIcon = view.findViewById<ImageView>(R.id.returnIcon)
         returnIcon.setOnClickListener{
             requireActivity().onBackPressed()
         }
-
         return view
     }
 

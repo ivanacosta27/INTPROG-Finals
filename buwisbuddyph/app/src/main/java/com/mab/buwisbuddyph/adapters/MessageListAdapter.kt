@@ -39,11 +39,9 @@ class MessageListAdapter(private val messages: List<new_Message>, private val re
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages[position]
 
-        // Set data to views
         holder.userFullName.text = message.fullName
         holder.lastMessage.text = message.last_chat
         holder.layout.setOnClickListener {
-            // Open ChatActivity and pass chatId as an argument
             val context = holder.itemView.context
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("chatID", message.chatId)
@@ -51,12 +49,9 @@ class MessageListAdapter(private val messages: List<new_Message>, private val re
         }
         holder.layout.setOnLongClickListener {
             showDeleteConfirmationDialog(holder.itemView.context, message)
-            true // Return true to consume the long click event
+            true
         }
 
-        // Set profile image (you need to load the image here if you have a URL or resource ID)
-        // holder.profileImage.setImageDrawable(...)
-        // Load profile image with Glide
         Glide.with(holder.itemView.context)
             .load(if (message.avatarUrl.isEmpty()) R.drawable.default_profile_img else message.avatarUrl)
             .into(holder.profileImage)

@@ -8,7 +8,7 @@ import com.mab.buwisbuddyph.R
 import java.time.LocalDate
 
 class CalendarAdapter(
-    private val days: ArrayList<LocalDate?>, // Changed to ArrayList<LocalDate?>
+    private val days: ArrayList<LocalDate?>,
     private val onItemListener: OnItemListener
 ) : RecyclerView.Adapter<CalendarViewHolder>() {
 
@@ -17,10 +17,8 @@ class CalendarAdapter(
         val view = inflater.inflate(R.layout.calendar_cell, parent, false)
         val layoutParams = view.layoutParams
         if (days.size > 15) {
-            // Month view
             layoutParams.height = (parent.height * 0.166666666).toInt()
         } else {
-            // Week view
             layoutParams.height = parent.height
         }
         return CalendarViewHolder(view, onItemListener, days)
@@ -28,14 +26,13 @@ class CalendarAdapter(
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         val date = days[position]
-        holder.dayOfMonth.text = date?.dayOfMonth?.toString() ?: "" // Display day of month if not null, otherwise empty string
+        holder.dayOfMonth.text = date?.dayOfMonth?.toString() ?: ""
         if (date == CalendarUtils.selectedDate) {
             holder.parentView.setBackgroundColor(Color.LTGRAY)
         } else {
-            holder.parentView.setBackgroundColor(Color.TRANSPARENT) // Reset background color if not selected
+            holder.parentView.setBackgroundColor(Color.TRANSPARENT)
         }
     }
-
 
     override fun getItemCount(): Int {
         return days.size
