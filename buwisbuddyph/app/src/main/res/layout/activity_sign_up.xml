@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:background="@drawable/img_bg2"
-    tools:context=".SignUpActivity">
+    tools:context=".sign_in.SignUpActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

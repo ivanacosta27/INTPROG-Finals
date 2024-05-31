@@ -25,6 +25,7 @@
                 android:id="@+id/returnIcon"
                 android:layout_width="40dp"
                 android:layout_height="30dp"
+                android:contentDescription="@string/back_button"
                 android:src="@drawable/left_icon"
                 android:layout_centerVertical="true"
                 />
@@ -172,6 +173,17 @@
                 android:layout_gravity="center"
                 android:background="@drawable/button_default"/>
 
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:visibility="invisible"
+                android:background="@drawable/button_home_color"
+                android:text="Save"/>
         </LinearLayout>
 
     </ScrollView>

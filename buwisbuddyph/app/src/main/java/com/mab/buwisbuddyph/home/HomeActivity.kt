@@ -22,7 +22,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.android.gms.wallet.*
-import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.wallet.AutoResolveHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,7 +37,7 @@ import com.mab.buwisbuddyph.BudgetActivity
 import com.mab.buwisbuddyph.GuideActivity
 import com.mab.buwisbuddyph.ProfileActivity
 import com.mab.buwisbuddyph.R
-import com.mab.buwisbuddyph.SignInActivity
+import com.mab.buwisbuddyph.sign_in.SignInActivity
 import com.mab.buwisbuddyph.TaxCalculatorActivity
 import com.mab.buwisbuddyph.accountant.AccountantHelpActivity
 import com.mab.buwisbuddyph.calendar.CalendarFragment
@@ -221,7 +220,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 val userId = auth.currentUser?.uid
                 if (userId != null) {
-                    val documentId = db.collection("users").document().id // Generate a unique document ID
+                    val documentId = db.collection("users").document().id
                     saveImageToDatabase(documentId, imageUrl.toString())
                 }
             }
@@ -298,14 +297,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val intent = Intent(this, AccountantHelpActivity::class.java)
                 startActivity(intent)
             }
-//            R.id.nav_tax_calculator -> {
-//                val intent = Intent(this, TaxCalculatorActivity::class.java)
-//                startActivity(intent)
-//            }
-//            R.id.nav_document_list -> {
-//                val intent = Intent(this, DocumentListActivity::class.java)
-//                startActivity(intent)
-//            }
+            R.id.nav_tax_calculator -> {
+                val intent = Intent(this, TaxCalculatorActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_document_list -> {
+                val intent = Intent(this, DocumentListActivity::class.java)
+                startActivity(intent)
+            }
             R.id.nav_purchase -> {
                 GooglePayUtil.isReadyToPay(this) { isReady ->
                     if (isReady) {

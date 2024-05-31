@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph
+package com.mab.buwisbuddyph.sign_in
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -16,6 +16,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.home.HomeActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.Calendar

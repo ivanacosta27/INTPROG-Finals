@@ -1,4 +1,4 @@
-package com.mab.buwisbuddyph
+package com.mab.buwisbuddyph.sign_in
 
 import android.content.Context
 import android.content.Intent
@@ -14,6 +14,8 @@ import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mab.buwisbuddyph.LoadingDialog
+import com.mab.buwisbuddyph.R
 import com.mab.buwisbuddyph.home.HomeActivity
 
 
@@ -110,5 +112,4 @@ class SignInActivity : AppCompatActivity() {
         val intent = Intent(this, ForgotPasswordActivity::class.java)
         startActivity(intent)
     }
-
 }

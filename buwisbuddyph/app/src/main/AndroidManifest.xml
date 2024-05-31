@@ -17,6 +17,12 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".sign_in.NewPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".sign_in.VerificationPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".util.EditProfile"
             android:exported="false" />
 
@@ -49,7 +55,7 @@
             android:name=".accountant.AccountantHelpActivity"
             android:exported="false" />
         <activity
-            android:name=".ForgotPasswordActivity"
+            android:name=".sign_in.ForgotPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".ProfileActivity"
@@ -70,7 +76,7 @@
             android:name=".forum.PostActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".sign_in.SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".messages.ChatActivity"
@@ -79,7 +85,7 @@
             android:name=".messages.CreateMessageActivity"
             android:exported="false" />
         <activity
-            android:name=".SignInActivity"
+            android:name=".sign_in.SignInActivity"
             android:exported="true"
             android:theme="@style/Theme.Design.Light.NoActionBar"
             android:windowSoftInputMode="adjustPan">
