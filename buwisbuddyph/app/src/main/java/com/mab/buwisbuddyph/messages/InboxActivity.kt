@@ -21,7 +21,7 @@ class InboxActivity : AppCompatActivity(), MessageListAdapter.OnRefreshListener 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.new_fragment_trash)
+        setContentView(R.layout.new_fragment_inbox)
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
