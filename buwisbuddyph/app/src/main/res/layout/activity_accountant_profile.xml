@@ -45,17 +45,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/messages_icon"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_below="@id/appName"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"/>
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/accountantProfileImage"
         android:layout_width="70dp"

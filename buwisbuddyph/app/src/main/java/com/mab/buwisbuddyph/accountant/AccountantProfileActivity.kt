@@ -1,6 +1,5 @@
 package com.mab.buwisbuddyph.accountant
 
-import ReviewAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.mab.buwisbuddyph.R
+import com.mab.buwisbuddyph.adapters.ReviewAdapter
 import com.mab.buwisbuddyph.dataclass.Review
 import com.mab.buwisbuddyph.dataclass.User
 import de.hdodenhof.circleimageview.CircleImageView
