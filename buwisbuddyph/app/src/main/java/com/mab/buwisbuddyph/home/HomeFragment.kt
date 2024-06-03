@@ -119,6 +119,8 @@ class HomeFragment : Fragment() {
         expenseList.add(expenseMap)
         updateExpenseListView()
         saveExpensesToFirebase()
+        expenseLabelET.text.clear()
+        expenseET.text.clear()
     }
 
     private fun updateExpenseListView() {

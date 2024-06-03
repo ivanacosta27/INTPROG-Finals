@@ -40,13 +40,16 @@ class BudgetActivity : AppCompatActivity() {
     private fun saveBudgetToFirebase(budget: Double) {
         if (user != null) {
             val userRef = db.collection("users").document(user.uid)
-            val data = hashMapOf("userBudget" to budget, "userExpenseList" to emptyList<Map<String, String>>())
-            userRef.set(data)
+            val data = mapOf(
+                "userBudget" to budget,
+                "userExpenseList" to emptyList<Map<String, String>>()
+            )
+            userRef.update(data)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Budget set and expenses cleared successfully", Toast.LENGTH_SHORT).show()
                 }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Error saving budget", Toast.LENGTH_SHORT).show()
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error saving budget: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         } else {
             Toast.makeText(this, "User not signed in", Toast.LENGTH_SHORT).show()

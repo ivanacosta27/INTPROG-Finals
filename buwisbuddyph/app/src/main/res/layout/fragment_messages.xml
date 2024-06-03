@@ -17,7 +17,6 @@
         android:layout_height="100dp"
         android:text="Inbox"
         android:tint="@color/black" />
-    />
 
     <Button
         android:id="@+id/btnArchive"

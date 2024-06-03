@@ -69,7 +69,6 @@
             android:textColor="@color/home_color" />
 
         <EditText
-
             android:id="@+id/expense_label_ET"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
